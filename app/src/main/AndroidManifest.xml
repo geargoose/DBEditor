@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DatabaseEditorForAndroid">
         <activity
+            android:name=".TableViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
