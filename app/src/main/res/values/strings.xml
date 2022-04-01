@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Database editor for android</string>
+    <string name="add_a_database">Add a database</string>
+</resources>
