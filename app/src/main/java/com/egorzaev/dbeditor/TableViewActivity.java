@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -13,16 +16,25 @@ import java.util.ArrayList;
 
 public class TableViewActivity extends AppCompatActivity {
 
-    TableLayout table;
+    TableLayout table_view;
+    ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_view);
 
-        table = findViewById(R.id.table);
+        table_view = findViewById(R.id.table);
+        spinner = findViewById(R.id.spinner);
+        int table_id = getIntent().getIntExtra("db_id", -1);
 
-        ArrayList<String[]> items = new ArrayList<>();
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         Db db = new Db(getBaseContext(), "Vegetables", null, 1);
         SQLiteDatabase projects = db.getReadableDatabase();
@@ -32,26 +44,19 @@ public class TableViewActivity extends AppCompatActivity {
         if (c.getCount() > 0) {
             c.moveToFirst();
             do {
-                String[] s = new String[c.getColumnCount()];
+                TableRow row = new TableRow(this);
+
                 for (int i = 0; i < c.getColumnCount(); i++) {
-                    s[i] = c.getString(i);
+                    Button button = new Button(this); // c.getString(i)
+                    button.setText(c.getString(i));
+                    row.addView(button);
                 }
-                items.add(s);
+
+                table_view.addView(row);
+
             } while (c.moveToNext());
         }
-
         c.close();
-
-        for (String[] i : items) {
-            TableRow row = new TableRow(this);
-            for (String s: i) {
-                Button button = new Button(this);
-                button.setText(s);
-                row.addView(button);
-            }
-
-            table.addView(row);
-        }
-
+        spinner.setVisibility(View.GONE);
     }
 }

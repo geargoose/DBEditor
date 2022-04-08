@@ -14,12 +14,12 @@ public class Db extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String request = "CREATE TABLE projects (\n" +
+        String request = "CREATE TABLE dbfiles (\n" +
                 "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "    title text NOT NULL,\n" +
                 "    name text NOT NULL,\n" +
                 "    description text NOT NULL,\n" +
-                "    date text\n" +
+                "    type text DEFAULT \"local\",\n" +
+                "    path text NOT NULL\n" +
                 ");\n";
         db.execSQL(request);
     }
