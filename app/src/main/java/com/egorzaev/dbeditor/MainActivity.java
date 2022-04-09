@@ -8,11 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton add_fab;
     ListView database_list;
-    ArrayList<String> bugaga;
+    ArrayList<String> names;
+    ArrayList<String> tables;
+    ArrayList<String> paths;
     ArrayAdapter<String> adapter;
 
     @Override
@@ -34,11 +34,13 @@ public class MainActivity extends AppCompatActivity {
         Db db = new Db(getBaseContext(), "dbfiles", null, 1);
         SQLiteDatabase dbfiles = db.getReadableDatabase();
 
-        bugaga = new ArrayList<>();
+        names = new ArrayList<>();
         database_list = findViewById(R.id.database_list);
         add_fab = findViewById(R.id.add_fab);
-        bugaga.add("Test db");
-        adapter = new ArrayAdapter<>(getBaseContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, bugaga);
+        names.add("Test db");
+        tables.add("dbfiles");
+        paths.add("dbfiles");
+        adapter = new ArrayAdapter<>(getBaseContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, names);
 
         add_fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +54,11 @@ public class MainActivity extends AppCompatActivity {
         database_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(MainActivity.this, TableViewActivity.class).putExtra("db_id", position));
+                Intent intent = new Intent(MainActivity.this, TableViewActivity.class);
+                intent.putExtra("name", names.get(position));
+                intent.putExtra("path", paths.get(position));
+                intent.putExtra("table", tables.get(position));
+                startActivity(intent);
             }
         });
 
@@ -60,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         if (c.getCount() > 0) {
             c.moveToFirst();
             do {
-                bugaga.add(c.getString(1));
+                names.add(c.getString(1));
             } while (c.moveToNext());
         }
         c.close();
@@ -81,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 Db db = new Db(getBaseContext(), "dbfiles", null, 1);
                 SQLiteDatabase dbfiles = db.getWritableDatabase();
 
-                bugaga.add(chosenDbUri.getPath());
+                names.add(chosenDbUri.getPath());
                 adapter.notifyDataSetChanged();
 
                 ContentValues cv = new ContentValues();

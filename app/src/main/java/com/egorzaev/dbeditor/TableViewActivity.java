@@ -19,6 +19,10 @@ public class TableViewActivity extends AppCompatActivity {
     TableLayout table_view;
     ProgressBar spinner;
 
+    String name;
+    String path;
+    String table;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,20 +30,17 @@ public class TableViewActivity extends AppCompatActivity {
 
         table_view = findViewById(R.id.table);
         spinner = findViewById(R.id.spinner);
-        int table_id = getIntent().getIntExtra("db_id", -1);
-
-
-
+        table = getIntent().getStringExtra("db");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        Db db = new Db(getBaseContext(), "Vegetables", null, 1);
-        SQLiteDatabase projects = db.getReadableDatabase();
+        Db db = new Db(getBaseContext(), path, null, 1);
+        SQLiteDatabase database = db.getReadableDatabase();
 
-        Cursor c = projects.query("projects", null, null, null, null, null, null);
+        Cursor c = database.query(table, null, null, null, null, null, null);
 
         if (c.getCount() > 0) {
             c.moveToFirst();
@@ -57,6 +58,24 @@ public class TableViewActivity extends AppCompatActivity {
             } while (c.moveToNext());
         }
         c.close();
+
+        /*Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+
         spinner.setVisibility(View.GONE);
     }
 }
