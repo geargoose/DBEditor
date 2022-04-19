@@ -24,10 +24,6 @@ public class TableViewActivity extends AppCompatActivity {
     String name;
     String path;
     String table;
-    String query;
-
-    Db db;
-    SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,23 +36,16 @@ public class TableViewActivity extends AppCompatActivity {
         name = getIntent().getStringExtra("name");
         table = getIntent().getStringExtra("table");
         path = getIntent().getStringExtra("path");
-
-        db = new Db(getBaseContext(), path, null, 1);
-        database = db.getReadableDatabase();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        Cursor c;
+        Db db = new Db(getBaseContext(), path, null, 1);
+        SQLiteDatabase database = db.getReadableDatabase();
 
-        if (query != null) {
-            c = database.rawQuery(query, null);
-        }
-        else {
-            c = database.query(table, null, null, null, null, null, null);
-        }
+        Cursor c = database.query(table, null, null, null, null, null, null);
 
         TableRow titles = new TableRow(this);
         for (String name : c.getColumnNames()) {
@@ -104,10 +93,10 @@ public class TableViewActivity extends AppCompatActivity {
         spinner.setVisibility(View.GONE);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        database.close();
-        db.close();
-    }
+    //@Override
+    //protected void onDestroy() {
+    //    super.onDestroy();
+    //    database.close();
+    //    db.close();
+    //}
 }

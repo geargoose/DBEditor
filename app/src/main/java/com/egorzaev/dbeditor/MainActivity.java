@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
             c.moveToFirst();
             do {
                 names.add(c.getString(1));
+                types.add(c.getString(3));
                 paths.add(c.getString(4));
                 types.add(c.getString(3));
             } while (c.moveToNext());
