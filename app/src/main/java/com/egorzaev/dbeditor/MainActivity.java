@@ -1,6 +1,7 @@
 package com.egorzaev.dbeditor;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -28,7 +30,7 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MY";
+    private static final String TAG = "ezaev";
 
     FloatingActionButton add_fab;
     ListView database_list;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> names;
     ArrayList<String> paths;
     ArrayList<String> types;
+
     ArrayAdapter<String> adapter;
 
     @Override
@@ -46,9 +49,26 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, 1);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, 1);
+        }
 
         Db db = new Db(getBaseContext(), "dbfiles", null, 1);
         SQLiteDatabase dbfiles = db.getReadableDatabase();
+
+        if (isExternalStorageReadable()) {
+            Toast.makeText(this, "can read", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "no read, go away", Toast.LENGTH_SHORT).show();
+        }
+
+        if (isExternalStorageWritable()) {
+            Toast.makeText(this, "can write", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "no write, go away", Toast.LENGTH_SHORT).show();
+        }
 
         names = new ArrayList<>();
         paths = new ArrayList<>();
@@ -87,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("path", paths.get(position));
                 intent.putExtra("type", types.get(position));
                 startActivity(intent);
+                
+                dbfiles.close();
+                db.close();
             }
         });
 
@@ -113,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
             names.clear();
             paths.clear();
             types.clear();
+
+            names.add("Test db");
+            paths.add("dbfiles");
+            types.add("local");
+
             c.moveToFirst();
             do {
                 names.add(c.getString(1));
@@ -137,12 +165,21 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
                 ContentValues cv = new ContentValues();
+
                 cv.put("name", getFilePath(uri));
                 cv.put("description", "Another local DB");
                 cv.put("type", "local");
-                cv.put("path", getFilePath(uri));
-                Log.e("PAUK", "onActivityResult: " + getFilePath(uri));
+                String url;
+                if (getFilePath(uri).contains("raw:")) {
+                    url = getFilePath(uri).substring(4);
+                }
+                else {
+                    url = getFilePath(uri);
+                }
+                cv.put("path", url);
+
                 dbfiles.insert("dbfiles", null, cv);
+
                 update_table(dbfiles);
                 dbfiles.close();
             }
@@ -210,10 +247,26 @@ public class MainActivity extends AppCompatActivity {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    // метод возвращает из полного пути расширение файла
     public String getFileExtension(String path) {
         int pos = path.lastIndexOf(".");
         if (pos != -1) return path.substring(pos + 1);
         else return "";
+    }
+
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
     }
 }

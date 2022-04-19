@@ -1,5 +1,8 @@
 package com.egorzaev.dbeditor;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -19,6 +22,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -36,6 +40,13 @@ public class TableListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_list);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, 1);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, 1);
+        }
+
         name = getIntent().getStringExtra("name");
         path = getIntent().getStringExtra("path");
         type = getIntent().getStringExtra("type");
@@ -52,10 +63,7 @@ public class TableListActivity extends AppCompatActivity {
 
         if (c.moveToFirst()) {
             while (!c.isAfterLast()) {
-                //int i = c.getColumnIndex("name");
-                //if (i >= 0 && i <= c.getColumnCount()) {
                 tableNames.add(c.getString(c.getColumnIndex("name")));
-                //}
                 c.moveToNext();
             }
         }
