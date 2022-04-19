@@ -2,6 +2,7 @@ package com.egorzaev.dbeditor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -30,7 +32,10 @@ public class TableViewActivity extends AppCompatActivity {
 
         table_view = findViewById(R.id.table);
         spinner = findViewById(R.id.spinner);
-        table = getIntent().getStringExtra("db");
+
+        name = getIntent().getStringExtra("name");
+        table = getIntent().getStringExtra("table");
+        path = getIntent().getStringExtra("path");
     }
 
     @Override
@@ -42,8 +47,17 @@ public class TableViewActivity extends AppCompatActivity {
 
         Cursor c = database.query(table, null, null, null, null, null, null);
 
+        TableRow titles = new TableRow(this);
+        for (String name : c.getColumnNames()) {
+            TextView textView = new TextView(this);
+            textView.setText(name);
+            titles.addView(textView);
+        }
+        table_view.addView(titles);
+
         if (c.getCount() > 0) {
             c.moveToFirst();
+
             do {
                 TableRow row = new TableRow(this);
 
@@ -77,5 +91,12 @@ public class TableViewActivity extends AppCompatActivity {
         }*/
 
         spinner.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        database.close();
+        db.close();
     }
 }
