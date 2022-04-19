@@ -112,10 +112,12 @@ public class MainActivity extends AppCompatActivity {
         if (c.getCount() > 0) {
             names.clear();
             paths.clear();
+            types.clear();
             c.moveToFirst();
             do {
                 names.add(c.getString(1));
                 paths.add(c.getString(4));
+                types.add(c.getString(3));
             } while (c.moveToNext());
         }
         c.close();

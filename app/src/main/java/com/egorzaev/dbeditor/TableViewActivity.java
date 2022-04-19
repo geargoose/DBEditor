@@ -26,6 +26,9 @@ public class TableViewActivity extends AppCompatActivity {
     String table;
     String query;
 
+    Db db;
+    SQLiteDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,14 +40,14 @@ public class TableViewActivity extends AppCompatActivity {
         name = getIntent().getStringExtra("name");
         table = getIntent().getStringExtra("table");
         path = getIntent().getStringExtra("path");
+
+        db = new Db(getBaseContext(), path, null, 1);
+        database = db.getReadableDatabase();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        Db db = new Db(getBaseContext(), path, null, 1);
-        SQLiteDatabase database = db.getReadableDatabase();
 
         Cursor c;
 
