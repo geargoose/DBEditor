@@ -22,6 +22,7 @@ public class TableViewActivity extends AppCompatActivity {
     String name;
     String path;
     String table;
+    String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,14 @@ public class TableViewActivity extends AppCompatActivity {
         Db db = new Db(getBaseContext(), path, null, 1);
         SQLiteDatabase database = db.getReadableDatabase();
 
-        Cursor c = database.query(table, null, null, null, null, null, null);
+        Cursor c;
+
+        if (query != null) {
+            c = database.rawQuery(query, null);
+        }
+        else {
+            c = database.query(table, null, null, null, null, null, null);
+        }
 
         if (c.getCount() > 0) {
             c.moveToFirst();

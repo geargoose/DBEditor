@@ -18,7 +18,7 @@ public class Db extends SQLiteOpenHelper {
                 "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "    name text NOT NULL,\n" +
                 "    description text NOT NULL,\n" +
-                "    type text DEFAULT \"local\",\n" +
+                "    type text DEFAULT 'local',\n" +
                 "    path text NOT NULL\n" +
                 ");\n";
         db.execSQL(request);
