@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 cv.put("description", "Another local DB");
                 cv.put("type", "local");
                 cv.put("path", getFilePath(uri));
+                Log.e("PAUK", "onActivityResult: " + getFilePath(uri));
                 dbfiles.insert("dbfiles", null, cv);
                 update_table(dbfiles);
                 dbfiles.close();

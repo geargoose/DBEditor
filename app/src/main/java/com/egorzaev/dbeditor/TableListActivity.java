@@ -45,6 +45,7 @@ public class TableListActivity extends AppCompatActivity {
         ArrayList<String> tableNames = new ArrayList<String>();
 
         Db db = new Db(getBaseContext(), path, null, 1);
+        Log.d("PAUK", "onCreate: " + db);
         SQLiteDatabase database = db.getReadableDatabase();
 
         Cursor c = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
