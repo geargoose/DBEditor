@@ -18,6 +18,9 @@
         android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.DatabaseEditorForAndroid">
         <activity
+            android:name=".QueryActivity"
+            android:exported="false" />
+        <activity
             android:name=".TableListActivity"
             android:exported="false" />
         <activity

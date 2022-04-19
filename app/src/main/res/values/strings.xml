@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Database editor for android</string>
     <string name="add_a_database">Add a database</string>
+    <string name="execute">Execute</string>
+    <string name="select_from_hint" translatable="false">SELECT * FROM</string>
+    <string name="clear">Clear</string>
 </resources>
