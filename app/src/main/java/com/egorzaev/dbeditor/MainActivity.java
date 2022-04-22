@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton add_fab;
     ListView database_list;
+
+    Button open;
+    EditText custompath;
 
     ArrayList<String> names;
     ArrayList<String> paths;
@@ -94,6 +99,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        custompath = findViewById(R.id.pathEdit);
+        open = findViewById(R.id.openButton);
+        open.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TableListActivity.class);
+                Log.e(TAG, "onItemClick: " + custompath.getText().toString());
+                intent.putExtra("name", "userdb");
+                intent.putExtra("path", custompath.getText().toString());
+                intent.putExtra("type", "local db");
+
+                // dbfiles.close();
+                // db.close();
+
+                startActivity(intent);
+            }
+        });
+
         database_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -106,10 +129,11 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("name", names.get(position));
                 intent.putExtra("path", paths.get(position));
                 intent.putExtra("type", types.get(position));
+
+                // dbfiles.close();
+                // db.close();
+
                 startActivity(intent);
-                
-                dbfiles.close();
-                db.close();
             }
         });
 
@@ -147,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 types.add(c.getString(3));
                 paths.add(c.getString(4));
                 types.add(c.getString(3));
+                paths.add(c.getString(4));
             } while (c.moveToNext());
         }
         c.close();

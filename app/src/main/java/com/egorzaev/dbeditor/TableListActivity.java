@@ -1,28 +1,26 @@
 package com.egorzaev.dbeditor;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
-import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
+import android.media.VolumeShaper;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
+import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -40,9 +38,12 @@ public class TableListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_list);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, 1);
-        }
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        //    this.requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, 1);
+        //}
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, 1);
         }
@@ -53,9 +54,12 @@ public class TableListActivity extends AppCompatActivity {
 
         tables_list = findViewById(R.id.tables_list);
 
-        ArrayList<String> tableNames = new ArrayList<String>();
+        ArrayList<String> tableNames = new ArrayList<>();
 
-        Db db = new Db(getBaseContext(), path, null, 1);
+        Log.e("PAUK", "onCreate: "+Environment.getExternalStorageDirectory());
+        Log.e("PAUK", "onCreate: "+Environment.getExternalStorageState());
+
+        Db db = new Db(peekAvailableContext(), path, null, 1);
         Log.d("PAUK", "onCreate: " + db);
         SQLiteDatabase database = db.getReadableDatabase();
 
