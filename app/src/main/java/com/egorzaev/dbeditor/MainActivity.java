@@ -34,11 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "ezaev";
 
-    FloatingActionButton add_fab;
-    ListView database_list;
-
     Button open;
     EditText custompath;
+    FloatingActionButton add_fab;
+    ListView database_list;
 
     ArrayList<String> names;
     ArrayList<String> paths;
@@ -81,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
         database_list = findViewById(R.id.database_list);
         add_fab = findViewById(R.id.add_fab);
+        custompath = findViewById(R.id.pathEdit);
+        open = findViewById(R.id.openButton);
 
         names.add("Test db");
         paths.add("dbfiles");
@@ -99,23 +100,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        custompath = findViewById(R.id.pathEdit);
-        open = findViewById(R.id.openButton);
-        open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TableListActivity.class);
-                Log.e(TAG, "onItemClick: " + custompath.getText().toString());
-                intent.putExtra("name", "userdb");
-                intent.putExtra("path", custompath.getText().toString());
-                intent.putExtra("type", "local db");
+        // query_fab.setOnClickListener(new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View v) {
+        //         Intent intent = new Intent(MainActivity.this, QueryActivity.class);
+        //         Log.e(TAG, "onItemClick: " + custompath.getText().toString());
+        //         intent.putExtra("name", "userdb");
+        //         intent.putExtra("path", custompath.getText().toString());
+        //         intent.putExtra("type", "local db");
+        //         startActivity(intent);
+        //     }
+        // });
 
-                // dbfiles.close();
-                // db.close();
-
-                startActivity(intent);
-            }
-        });
 
         database_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -130,22 +126,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("path", paths.get(position));
                 intent.putExtra("type", types.get(position));
 
-                // dbfiles.close();
-                // db.close();
-
                 startActivity(intent);
             }
         });
-
-        // Cursor c = dbfiles.query("dbfiles", null, null, null, null, null, null);
-        // if (c.getCount() > 0) {
-        //     c.moveToFirst();
-        //     do {
-        //         names.add(c.getString(1));
-        //         paths.add(c.getString(4));
-        //     } while (c.moveToNext());
-        // }
-        // c.close();
 
         database_list.setAdapter(adapter);
         adapter.notifyDataSetChanged();

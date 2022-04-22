@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.VolumeShaper;
 import android.os.Build;
@@ -19,17 +20,24 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class TableListActivity extends AppCompatActivity {
 
+    // https://githubhot.com/repo/MKergall/osmbonuspack/issues/364
+
     String name;
     String path;
     String type;
+
     ListView tables_list;
+    FloatingActionButton query_fab;
     ArrayAdapter<String> adapter;
 
     @SuppressLint("Range")
@@ -44,6 +52,7 @@ public class TableListActivity extends AppCompatActivity {
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         //    this.requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, 1);
         //}
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, 1);
         }
@@ -52,7 +61,19 @@ public class TableListActivity extends AppCompatActivity {
         path = getIntent().getStringExtra("path");
         type = getIntent().getStringExtra("type");
 
+        query_fab = findViewById(R.id.query_fab);
         tables_list = findViewById(R.id.tables_list);
+
+        query_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TableListActivity.this, QueryActivity.class);
+                intent.putExtra("name", name);
+                intent.putExtra("path", path);
+                intent.putExtra("type", type);
+                startActivity(intent);
+            }
+        });
 
         ArrayList<String> tableNames = new ArrayList<>();
 
@@ -60,8 +81,17 @@ public class TableListActivity extends AppCompatActivity {
         Log.e("PAUK", "onCreate: "+Environment.getExternalStorageState());
 
         Db db = new Db(peekAvailableContext(), path, null, 1);
-        Log.d("PAUK", "onCreate: " + db);
-        SQLiteDatabase database = db.getReadableDatabase();
+        SQLiteDatabase database = null;
+
+        try {
+            database = db.getReadableDatabase();
+        }
+        catch (SQLException e) {
+            Toast.makeText(this, "Failed to open database", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(TableListActivity.this, MainActivity.class));
+        }
+
+        assert (database != null);
 
         Cursor c = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
 
