@@ -34,22 +34,20 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "ezaev";
 
-    Button open;
-    EditText custompath;
-    FloatingActionButton add_fab;
-    ListView database_list;
-
-    ArrayList<String> names;
-    ArrayList<String> paths;
-    ArrayList<String> types;
-
-    ArrayAdapter<String> adapter;
+    // Button open;
+    // EditText custompath;
+    // FloatingActionButton add_fab;
+    // ListView database_list;
+    // ArrayList<String> names;
+    // ArrayList<String> paths;
+    // ArrayList<String> types;
+    // ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+ /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, 1);
         }
@@ -80,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
         database_list = findViewById(R.id.database_list);
         add_fab = findViewById(R.id.add_fab);
-        custompath = findViewById(R.id.pathEdit);
-        open = findViewById(R.id.openButton);
+        // custompath = findViewById(R.id.pathEdit);
+        // open = findViewById(R.id.openButton);
 
         names.add("Test db");
         paths.add("dbfiles");
@@ -91,14 +89,18 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new ArrayAdapter<>(getBaseContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, names);
 
-        add_fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent picker = new Intent(Intent.ACTION_GET_CONTENT);
-                picker.setType("*/*");
-                startActivityForResult(picker, 1);
-            }
-        });
+
+  */
+
+        // add_fab.setOnClickListener(new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View v) {
+        //         Intent picker = new Intent(Intent.ACTION_GET_CONTENT);
+        //         picker.setType("*/*");
+        //         startActivityForResult(picker, 1);
+        //     }
+        // });
+
 
         // query_fab.setOnClickListener(new View.OnClickListener() {
         //     @Override
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         //     }
         // });
 
+        /*
 
         database_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -135,66 +138,67 @@ public class MainActivity extends AppCompatActivity {
 
         dbfiles.close();
         db.close();
+
+         */
     }
 
-    void update_table(SQLiteDatabase db) {
-        Cursor c = db.query("dbfiles", null, null, null, null, null, null);
-        if (c.getCount() > 0) {
-            names.clear();
-            paths.clear();
-            types.clear();
+    // void update_table(SQLiteDatabase db) {
+    //     Cursor c = db.query("dbfiles", null, null, null, null, null, null);
+    //     if (c.getCount() > 0) {
+    //         names.clear();
+    //         paths.clear();
+    //         types.clear();
+//
+    //         names.add("Test db");
+    //         paths.add("dbfiles");
+    //         types.add("local");
+//
+    //         c.moveToFirst();
+    //         do {
+    //             names.add(c.getString(1));
+    //             types.add(c.getString(3));
+    //             paths.add(c.getString(4));
+    //             types.add(c.getString(3));
+    //             paths.add(c.getString(4));
+    //         } while (c.moveToNext());
+    //     }
+    //     c.close();
+    // }
 
-            names.add("Test db");
-            paths.add("dbfiles");
-            types.add("local");
-
-            c.moveToFirst();
-            do {
-                names.add(c.getString(1));
-                types.add(c.getString(3));
-                paths.add(c.getString(4));
-                types.add(c.getString(3));
-                paths.add(c.getString(4));
-            } while (c.moveToNext());
-        }
-        c.close();
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                Uri uri = data.getData();
-
-                Db db = new Db(getBaseContext(), "dbfiles", null, 1);
-                SQLiteDatabase dbfiles = db.getWritableDatabase();
-
-                names.add(uri.getPath().substring(uri.getPath().indexOf(':') + 1));
-                adapter.notifyDataSetChanged();
-
-                ContentValues cv = new ContentValues();
-
-                cv.put("name", getFilePath(uri));
-                cv.put("description", "Another local DB");
-                cv.put("type", "local");
-                String url;
-                if (getFilePath(uri).contains("raw:")) {
-                    url = getFilePath(uri).substring(4);
-                }
-                else {
-                    url = getFilePath(uri);
-                }
-                cv.put("path", url);
-
-                dbfiles.insert("dbfiles", null, cv);
-
-                update_table(dbfiles);
-                dbfiles.close();
-            }
-        }
-    }
-
+    // protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    //     super.onActivityResult(requestCode, resultCode, data);
+//
+    //     if (requestCode == 1) {
+    //         if (resultCode == RESULT_OK) {
+    //             Uri uri = data.getData();
+//
+    //             Db db = new Db(getBaseContext(), "dbfiles", null, 1);
+    //             SQLiteDatabase dbfiles = db.getWritableDatabase();
+//
+    //             names.add(uri.getPath().substring(uri.getPath().indexOf(':') + 1));
+    //             adapter.notifyDataSetChanged();
+//
+    //             ContentValues cv = new ContentValues();
+//
+    //             cv.put("name", getFilePath(uri));
+    //             cv.put("description", "Another local DB");
+    //             cv.put("type", "local");
+    //             String url;
+    //             if (getFilePath(uri).contains("raw:")) {
+    //                 url = getFilePath(uri).substring(4);
+    //             }
+    //             else {
+    //                 url = getFilePath(uri);
+    //             }
+    //             cv.put("path", url);
+//
+    //             dbfiles.insert("dbfiles", null, cv);
+//
+    //             update_table(dbfiles);
+    //             dbfiles.close();
+    //         }
+    //     }
+    // }
 
     public String getFilePath(Uri uri) {
         String selection = null;
