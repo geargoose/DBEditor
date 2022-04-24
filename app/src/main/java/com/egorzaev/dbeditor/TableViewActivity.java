@@ -21,6 +21,7 @@ public class TableViewActivity extends AppCompatActivity {
     String path;
     String table;
     String query;
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class TableViewActivity extends AppCompatActivity {
         name = getIntent().getStringExtra("name");
         table = getIntent().getStringExtra("table");
         path = getIntent().getStringExtra("path");
+        type = getIntent().getStringExtra("type");
         query = getIntent().getStringExtra("query");
     }
 

@@ -14,6 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -138,7 +140,7 @@ public class MainFragment extends Fragment {
         paths.add("dbfiles");
         types.add("local");
 
-        // update_table(dbfiles);
+        update_table(dbfiles);
 
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, names);
 
@@ -160,7 +162,18 @@ public class MainFragment extends Fragment {
                 // intent.putExtra("type", types.get(position));
                 // startActivity(intent);
 
-                //Bundle b =
+                Bundle b =  new Bundle();
+                b.putString("name", names.get(position));
+                b.putString("path", paths.get(position));
+                b.putString("type", types.get(position));
+
+                dbfiles.close();
+                db.close();
+
+                Navigation.findNavController(view).navigate(R.id.tableListFragment, b, new NavOptions.Builder()
+                        .setEnterAnim(android.R.animator.fade_in)
+                        .setExitAnim(android.R.animator.fade_out)
+                        .build());
             }
         });
 

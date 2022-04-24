@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -45,6 +46,7 @@ public class TableListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_list);
+
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -71,14 +73,15 @@ public class TableListActivity extends AppCompatActivity {
                 intent.putExtra("name", name);
                 intent.putExtra("path", path);
                 intent.putExtra("type", type);
+                intent.putExtra("type", type);
                 startActivity(intent);
             }
         });
 
         ArrayList<String> tableNames = new ArrayList<>();
 
-        Log.e("PAUK", "onCreate: "+Environment.getExternalStorageDirectory());
-        Log.e("PAUK", "onCreate: "+Environment.getExternalStorageState());
+        // Log.e("PAUK", "onCreate: "+Environment.getExternalStorageDirectory());
+        // Log.e("PAUK", "onCreate: "+Environment.getExternalStorageState());
 
         Db db = new Db(peekAvailableContext(), path, null, 1);
         SQLiteDatabase database = null;

@@ -8,5 +8,71 @@
         android:id="@+id/mainFragment"
         android:name="com.egorzaev.dbeditor.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_tableListFragment"
+            app:destination="@id/tableListFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/tableListFragment"
+        android:name="com.egorzaev.dbeditor.TableListFragment"
+        android:label="fragment_table_list"
+        tools:layout="@layout/fragment_table_list" >
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="path"
+            app:argType="string" />
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_tableListFragment_to_queryFragment"
+            app:destination="@id/queryFragment" />
+        <action
+            android:id="@+id/action_tableListFragment_to_tableViewFragment"
+            app:destination="@id/tableViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/queryFragment"
+        android:name="com.egorzaev.dbeditor.QueryFragment"
+        android:label="fragment_query"
+        tools:layout="@layout/fragment_query" >
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="path"
+            app:argType="string" />
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_queryFragment_to_tableViewFragment"
+            app:destination="@id/tableViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tableViewFragment"
+        android:name="com.egorzaev.dbeditor.TableViewFragment"
+        android:label="fragment_table_view"
+        tools:layout="@layout/fragment_table_view">
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="path"
+            app:argType="string" />
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <argument
+            android:name="table"
+            app:argType="string" />
+        <argument
+            android:name="query"
+            app:argType="string" />
+    </fragment>
 </navigation>

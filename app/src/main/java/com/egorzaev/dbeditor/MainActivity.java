@@ -4,6 +4,7 @@ import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -47,14 +49,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
- /*
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, 1);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, 1);
         }
-
+/*
         Db db = new Db(getBaseContext(), "dbfiles", null, 1);
         SQLiteDatabase dbfiles = db.getReadableDatabase();
 
