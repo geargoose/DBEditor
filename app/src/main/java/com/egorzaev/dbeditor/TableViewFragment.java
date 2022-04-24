@@ -2,6 +2,7 @@ package com.egorzaev.dbeditor;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -98,34 +99,42 @@ public class TableViewFragment extends Fragment {
 
         Cursor c;
 
-        if (query == null || query.equals("")) {
-            c = database.query(table, null, null, null, null, null, null);
+        try {
+            if (query == null || query.equals("")) {
+                c = database.query(table, null, null, null, null, null, null);
+            } else {
+                c = database.rawQuery(query, null);
+            }
+
+            TableRow titles = new TableRow(getContext());
+            for (String name : c.getColumnNames()) {
+                TextView textView = new TextView(getContext());
+                textView.setText(name);
+                titles.addView(textView);
+            }
+            table_view.addView(titles);
+
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                do {
+                    TableRow row = new TableRow(getContext());
+                    for (int i = 0; i < c.getColumnCount(); i++) {
+                        Button button = new Button(getContext()); // c.getString(i)
+                        button.setText(c.getString(i));
+                        row.addView(button);
+                    }
+                    table_view.addView(row);
+                } while (c.moveToNext());
+            }
+            c.close();
         }
-        else {
-            c = database.rawQuery(query, null);
+        catch (SQLiteException e) {
+            TextView tv = new TextView(getContext());
+            tv.setText("В запросе допущена ошибка!");
+            table_view.addView(tv);
         }
 
-        TableRow titles = new TableRow(getContext());
-        for (String name : c.getColumnNames()) {
-            TextView textView = new TextView(getContext());
-            textView.setText(name);
-            titles.addView(textView);
-        }
-        table_view.addView(titles);
 
-        if (c.getCount() > 0) {
-            c.moveToFirst();
-            do {
-                TableRow row = new TableRow(getContext());
-                for (int i = 0; i < c.getColumnCount(); i++) {
-                    Button button = new Button(getContext()); // c.getString(i)
-                    button.setText(c.getString(i));
-                    row.addView(button);
-                }
-                table_view.addView(row);
-            } while (c.moveToNext());
-        }
-        c.close();
 
     }
 }
