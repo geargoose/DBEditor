@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,11 +93,11 @@ public class TableViewFragment extends Fragment {
 
         return view;
     }
-
+//
     @Override
     public void onResume() {
         super.onResume();
-
+//
         Db db = new Db(getContext(), path, null, 1);
         SQLiteDatabase database = db.getReadableDatabase();
 
@@ -118,9 +122,29 @@ public class TableViewFragment extends Fragment {
                 c.moveToFirst();
                 do {
                     TableRow row = new TableRow(getContext());
+                    String[] al = new String[c.getColumnCount()];
+                    for (int i = 0; i < c.getColumnCount(); i++) {
+                        al[i] = c.getString(i);
+                    }
+                    View.OnClickListener edit_action = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle b =  new Bundle();
+                            b.putString("name", name);
+                            b.putString("path", path);
+                            b.putString("type", type);
+                            b.putString("table", type);
+                            b.putStringArray("coords", al);
+                            Navigation.findNavController(getView()).navigate(R.id.itemEditorFragment, b, new NavOptions.Builder()
+                                    .setEnterAnim(android.R.animator.fade_in)
+                                    .setExitAnim(android.R.animator.fade_out)
+                                    .build());
+                        }
+                    };
                     for (int i = 0; i < c.getColumnCount(); i++) {
                         Button button = new Button(getContext()); // c.getString(i)
                         button.setText(c.getString(i));
+                        button.setOnClickListener(edit_action);
                         row.addView(button);
                     }
                     table_view.addView(row);
