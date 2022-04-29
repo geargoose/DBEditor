@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -81,6 +82,7 @@ public class TableListFragment extends Fragment {
     ListView tables_list;
     FloatingActionButton query_fab;
     ArrayAdapter<String> adapter;
+    TextView table_label;
 
     @SuppressLint("Range")
     @Override
@@ -95,6 +97,9 @@ public class TableListFragment extends Fragment {
 
         query_fab = view.findViewById(R.id.query_fab);
         tables_list = view.findViewById(R.id.tables_list);
+        table_label = view.findViewById(R.id.tableLabelTextView);
+
+        table_label.setText(path);
 
         query_fab.setOnClickListener(new View.OnClickListener() {
             @Override

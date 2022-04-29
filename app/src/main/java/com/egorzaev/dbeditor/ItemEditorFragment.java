@@ -112,7 +112,7 @@ public class ItemEditorFragment extends Fragment {
         //     // } while (c.moveToNext());
         // }
 
-        c.getColumnNames().
+        // c.getColumnNames()
 
         cols.addAll(Arrays.asList(c.getColumnNames()));
         vals.addAll(Arrays.asList(coords));

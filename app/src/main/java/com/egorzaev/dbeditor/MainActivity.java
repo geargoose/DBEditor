@@ -55,6 +55,19 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+        String request = "CREATE TABLE IF NOT EXISTS dbfiles (\n" +
+                "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "    name text NOT NULL,\n" +
+                "    description text NOT NULL,\n" +
+                "    type text DEFAULT 'local',\n" +
+                "    path text NOT NULL\n" +
+                ");\n";
+
+        Db db = new Db(this, "dbfiles", null, 1);
+        SQLiteDatabase dbfiles = db.getReadableDatabase();
+        dbfiles.execSQL(request);
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, 1);
         }
@@ -65,20 +78,21 @@ public class MainActivity extends AppCompatActivity {
         Db db = new Db(getBaseContext(), "dbfiles", null, 1);
         SQLiteDatabase dbfiles = db.getReadableDatabase();
 
+        /*
         if (isExternalStorageReadable()) {
             Toast.makeText(this, "can read", Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(this, "no read, go away", Toast.LENGTH_SHORT).show();
         }
-
         if (isExternalStorageWritable()) {
             Toast.makeText(this, "can write", Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(this, "no write, go away", Toast.LENGTH_SHORT).show();
         }
-
+        */
+/*
         names = new ArrayList<>();
         paths = new ArrayList<>();
         types = new ArrayList<>();
@@ -98,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
 
   */
-
         // add_fab.setOnClickListener(new View.OnClickListener() {
         //     @Override
         //     public void onClick(View v) {
@@ -120,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
         //         startActivity(intent);
         //     }
         // });
-
         /*
 
         database_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

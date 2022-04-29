@@ -8,6 +8,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
@@ -115,17 +116,11 @@ public class MainFragment extends Fragment {
         Db db = new Db(getContext(), "dbfiles", null, 1);
         SQLiteDatabase dbfiles = db.getReadableDatabase();
 
-        if (isExternalStorageReadable()) {
-            Toast.makeText(getContext(), "can read", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        if (!isExternalStorageReadable()) {
             Toast.makeText(getContext(), "no read, go away", Toast.LENGTH_SHORT).show();
         }
 
-        if (isExternalStorageWritable()) {
-            Toast.makeText(getContext(), "can write", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        if (!isExternalStorageWritable()) {
             Toast.makeText(getContext(), "no write, go away", Toast.LENGTH_SHORT).show();
         }
 
@@ -136,7 +131,7 @@ public class MainFragment extends Fragment {
         database_list = view.findViewById(R.id.database_list);
         add_fab =view.findViewById(R.id.add_fab);
 
-        names.add("Test db");
+        names.add("Built in db");
         paths.add("dbfiles");
         types.add("local");
 
@@ -174,6 +169,13 @@ public class MainFragment extends Fragment {
                         .setEnterAnim(android.R.animator.fade_in)
                         .setExitAnim(android.R.animator.fade_out)
                         .build());
+            }
+        });
+
+        database_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                return false;
             }
         });
 
@@ -229,24 +231,30 @@ public class MainFragment extends Fragment {
 
 
     void update_table(SQLiteDatabase db) {
-        Cursor c = db.query("dbfiles", null, null, null, null, null, null);
-        if (c.getCount() > 0) {
-            names.clear();
-            paths.clear();
-            types.clear();
+        try {
+            Cursor c = db.query("dbfiles", null, null, null, null, null, null);
+            if (c.getCount() > 0) {
+                names.clear();
+                paths.clear();
+                types.clear();
 
-            names.add("Test db");
-            paths.add("dbfiles");
-            types.add("local");
+                names.add("Built in db");
+                paths.add("dbfiles");
+                types.add("local");
 
-            c.moveToFirst();
-            do {
-                names.add(c.getString(1));
-                types.add(c.getString(3));
-                paths.add(c.getString(4));
-            } while (c.moveToNext());
+                c.moveToFirst();
+                do {
+                    names.add(c.getString(1));
+                    types.add(c.getString(3));
+                    paths.add(c.getString(4));
+                } while (c.moveToNext());
+            }
+            c.close();
+            // adapter.notifyDataSetChanged();
         }
-        c.close();
+        catch (SQLException e) {
+            Toast.makeText(getContext(), "Can't open DB list", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public String getFilePath(Uri uri) {
