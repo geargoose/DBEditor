@@ -76,6 +76,7 @@ public class TableViewFragment extends Fragment {
     String table;
     String query;
     String type;
+    String[] headers;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -133,7 +134,7 @@ public class TableViewFragment extends Fragment {
                             b.putString("name", name);
                             b.putString("path", path);
                             b.putString("type", type);
-                            b.putString("table", type);
+                            b.putString("table", table);
                             b.putStringArray("coords", al);
                             Navigation.findNavController(getView()).navigate(R.id.itemEditorFragment, b, new NavOptions.Builder()
                                     .setEnterAnim(android.R.animator.fade_in)

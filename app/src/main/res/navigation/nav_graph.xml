@@ -104,5 +104,8 @@
         <action
             android:id="@+id/action_itemEditorFragment_to_tableViewFragment2"
             app:destination="@id/tableViewFragment" />
+        <argument
+            android:name="headers"
+            app:argType="string[]" />
     </fragment>
 </navigation>

@@ -244,8 +244,6 @@ public class MainFragment extends Fragment {
                 names.add(c.getString(1));
                 types.add(c.getString(3));
                 paths.add(c.getString(4));
-                types.add(c.getString(3));
-                paths.add(c.getString(4));
             } while (c.moveToNext());
         }
         c.close();

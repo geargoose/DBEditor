@@ -5,6 +5,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentContainerView;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     // ArrayList<String> paths;
     // ArrayList<String> types;
     // ArrayAdapter<String> adapter;
+    FragmentContainerView fcv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
