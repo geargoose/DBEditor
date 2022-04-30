@@ -13,11 +13,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
-
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -27,50 +22,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MainFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MainFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public MainFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MainFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MainFragment newInstance(String param1, String param2) {
+    public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        // args.putString(ARG_PARAM1, param1);
+        // args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,20 +51,18 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        // if (getArguments() != null) {
+        //     mParam1 = getArguments().getString(ARG_PARAM1);
+        //     mParam2 = getArguments().getString(ARG_PARAM2);
+        // }
     }
 
 
     // ================================begin==============================================
 
 
-    private static final String TAG = "ezaev";
+    // private static final String TAG = "ezaev";
 
-    Button open;
-    EditText custompath;
     FloatingActionButton add_fab;
     ListView database_list;
 
@@ -129,7 +100,7 @@ public class MainFragment extends Fragment {
         types = new ArrayList<>();
 
         database_list = view.findViewById(R.id.database_list);
-        add_fab =view.findViewById(R.id.add_fab);
+        add_fab = view.findViewById(R.id.add_fab);
 
         names.add("Built in db");
         paths.add("dbfiles");
@@ -157,7 +128,7 @@ public class MainFragment extends Fragment {
                 // intent.putExtra("type", types.get(position));
                 // startActivity(intent);
 
-                Bundle b =  new Bundle();
+                Bundle b = new Bundle();
                 b.putString("name", names.get(position));
                 b.putString("path", paths.get(position));
                 b.putString("type", types.get(position));
@@ -210,8 +181,7 @@ public class MainFragment extends Fragment {
                 String url;
                 if (getFilePath(uri).contains("raw:")) {
                     url = getFilePath(uri).substring(4);
-                }
-                else {
+                } else {
                     url = getFilePath(uri);
                 }
                 cv.put("path", url);
@@ -225,9 +195,7 @@ public class MainFragment extends Fragment {
     }
 
 
-
     // ============================some==functions========================================
-
 
 
     void update_table(SQLiteDatabase db) {
@@ -251,9 +219,8 @@ public class MainFragment extends Fragment {
             }
             c.close();
             // adapter.notifyDataSetChanged();
-        }
-        catch (SQLException e) {
-            Toast.makeText(getContext(), "Can't open DB list", Toast.LENGTH_SHORT).show();
+        } catch (SQLException e) {
+            // Toast.makeText(getContext(), "Can't open DB list", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -267,7 +234,16 @@ public class MainFragment extends Fragment {
                 return Environment.getExternalStorageDirectory() + "/" + split[1];
             } else if (isDownloadsDocument(uri)) {
                 final String id = DocumentsContract.getDocumentId(uri);
-                uri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
+                try {
+                    uri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
+                }
+                catch (NumberFormatException e){
+                    if (id.contains("raw:")) {
+                        return id.substring(4);
+                    } else {
+                        return id;
+                    }
+                }
             } else if (isMediaDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -339,7 +315,6 @@ public class MainFragment extends Fragment {
         }
         return false;
     }
-
 
 
     // ================================end================================================
