@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.egorzaev.dbeditor"
         minSdk 22
-        targetSdk 31
+        targetSdk 22
         versionCode 1
         versionName "1.0"
 

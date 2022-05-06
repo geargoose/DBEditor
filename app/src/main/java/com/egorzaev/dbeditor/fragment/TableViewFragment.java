@@ -1,4 +1,4 @@
-package com.egorzaev.dbeditor;
+package com.egorzaev.dbeditor.fragment;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,7 +18,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.egorzaev.dbeditor.Db;
+import com.egorzaev.dbeditor.R;
 
 /**
  * A simple {@link Fragment} subclass.

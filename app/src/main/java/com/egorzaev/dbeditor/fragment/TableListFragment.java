@@ -1,7 +1,6 @@
-package com.egorzaev.dbeditor;
+package com.egorzaev.dbeditor.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,6 +19,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.egorzaev.dbeditor.Db;
+import com.egorzaev.dbeditor.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;

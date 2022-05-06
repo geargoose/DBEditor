@@ -1,4 +1,4 @@
-package com.egorzaev.dbeditor;
+package com.egorzaev.dbeditor.fragment;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -29,6 +29,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
+import com.egorzaev.dbeditor.Db;
+import com.egorzaev.dbeditor.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.egorzaev.dbeditor.MainFragment"
+        android:name="com.egorzaev.dbeditor.fragment.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/tableListFragment"
-        android:name="com.egorzaev.dbeditor.TableListFragment"
+        android:name="com.egorzaev.dbeditor.fragment.TableListFragment"
         android:label="fragment_table_list"
         tools:layout="@layout/fragment_table_list">
         <argument
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/queryFragment"
-        android:name="com.egorzaev.dbeditor.QueryFragment"
+        android:name="com.egorzaev.dbeditor.fragment.QueryFragment"
         android:label="fragment_query"
         tools:layout="@layout/fragment_query">
         <argument
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/tableViewFragment"
-        android:name="com.egorzaev.dbeditor.TableViewFragment"
+        android:name="com.egorzaev.dbeditor.fragment.TableViewFragment"
         android:label="fragment_table_view"
         tools:layout="@layout/fragment_table_view">
         <argument
@@ -80,7 +80,7 @@
     </fragment>
     <fragment
         android:id="@+id/itemEditorFragment"
-        android:name="com.egorzaev.dbeditor.ItemEditorFragment"
+        android:name="com.egorzaev.dbeditor.fragment.ItemEditorFragment"
         android:label="fragment_item_editor"
         tools:layout="@layout/fragment_item_editor">
 
