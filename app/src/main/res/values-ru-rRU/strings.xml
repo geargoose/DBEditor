@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Мобильная СУБД: Fragment Edition</string>
+    <string name="app_name">Мобильная СУБД</string>
     <string name="add_a_database">Добавить базу данных</string>
     <string name="execute">Выполнить</string>
     <string name="clear">Очистить</string>
     <string name="hello_blank_fragment">Добрый вечер я диспетчер</string>
+    <string name="save_changes">Сохранить изменения</string>
+    <string name="failed_to_open_db">Ошибка при открытии базы данных</string>
+    <string name="not_enough_permissions">Недостаточно разрешений для открытия файла базы данных</string>
+    <string name="db_open_error_message">Ошибка при открытии базы данных. Возможно приложению не даны разрешения или файл базы данных отсутствует.</string>
 </resources>

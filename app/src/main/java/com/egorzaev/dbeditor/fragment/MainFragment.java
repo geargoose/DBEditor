@@ -26,10 +26,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.egorzaev.dbeditor.Db;
+import com.egorzaev.dbeditor.MainActivity;
 import com.egorzaev.dbeditor.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -78,6 +80,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        //getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, 1);
@@ -142,6 +145,12 @@ public class MainFragment extends Fragment {
                         .setEnterAnim(android.R.animator.fade_in)
                         .setExitAnim(android.R.animator.fade_out)
                         .build());
+                // FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                // fragmentManager.beginTransaction()
+                //         .replace(R.id.nav_host_fragment, TableListFragment.class, b)
+                //         .setReorderingAllowed(true)
+                //         .addToBackStack(null) // name can be null
+                //         .commit();
             }
         });
 
@@ -303,21 +312,17 @@ public class MainFragment extends Fragment {
 
     public boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     public boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
+
+    
 
     // ================================end================================================
 }
