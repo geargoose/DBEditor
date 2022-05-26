@@ -93,11 +93,11 @@ public class MainFragment extends Fragment {
         SQLiteDatabase dbfiles = db.getReadableDatabase();
 
         if (!isExternalStorageReadable()) {
-            Toast.makeText(getContext(), "no read, go away", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Can't read files, check permissions", Toast.LENGTH_SHORT).show();
         }
 
         if (!isExternalStorageWritable()) {
-            Toast.makeText(getContext(), "no write, go away", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Can't write files, check permissions", Toast.LENGTH_SHORT).show();
         }
 
         names = new ArrayList<>();
@@ -107,9 +107,9 @@ public class MainFragment extends Fragment {
         database_list = view.findViewById(R.id.database_list);
         add_fab = view.findViewById(R.id.add_fab);
 
-        names.add("Built in db");
-        paths.add("dbfiles");
-        types.add("local");
+        // names.add("Built in db");
+        // paths.add("dbfiles");
+        // types.add("local");
 
         update_table(dbfiles);
 
@@ -217,9 +217,9 @@ public class MainFragment extends Fragment {
                 paths.clear();
                 types.clear();
 
-                names.add("Built in db");
-                paths.add("dbfiles");
-                types.add("local");
+                // names.add("Built in db");
+                // paths.add("dbfiles");
+                // types.add("local");
 
                 c.moveToFirst();
                 do {

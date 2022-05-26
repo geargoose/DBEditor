@@ -1,4 +1,4 @@
-package com.egorzaev.dbeditor;
+package com.egorzaev.dbeditor.fragment;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.egorzaev.dbeditor.R;
 
 public class NewTableFragment extends Fragment {
 
