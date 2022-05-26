@@ -9,4 +9,5 @@
     <string name="failed_to_open_db">Failed to open database</string>
     <string name="not_enough_permissions">The app hasn\'t got enough permissions.</string>
     <string name="db_open_error_message">Failed to open the database. May be app hasn\'t got ehough permissions or database file does not exists.</string>
+    <string name="empty_request_not_allowed">Can\'t run empty query!</string>
 </resources>

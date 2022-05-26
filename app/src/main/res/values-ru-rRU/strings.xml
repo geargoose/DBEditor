@@ -9,4 +9,5 @@
     <string name="failed_to_open_db">Ошибка при открытии базы данных</string>
     <string name="not_enough_permissions">Недостаточно разрешений для открытия файла базы данных</string>
     <string name="db_open_error_message">Ошибка при открытии базы данных. Возможно приложению не даны разрешения или файл базы данных отсутствует.</string>
+    <string name="empty_request_not_allowed">Нельзя выполнить пустой запрос!</string>
 </resources>

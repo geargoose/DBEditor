@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.egorzaev.dbeditor.R;
 
@@ -83,27 +84,33 @@ public class QueryFragment extends Fragment {
         type = getArguments().getString("type");
 
         execute = view.findViewById(R.id.executeButton);
+        clear = view.findViewById(R.id.clearButton);
         query_edit = view.findViewById(R.id.queryTextEdit);
 
         execute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Intent intent = new Intent(QueryActivity.this, TableViewActivity.class);
-                // intent.putExtra("name", name);
-                // intent.putExtra("path", path);
-                // intent.putExtra("type", type);
-                // intent.putExtra("query", query_edit.getText().toString());
-                // startActivity(intent);
+                if (!(query_edit.getText().toString().equals(""))) {
+                    Bundle b = new Bundle();
+                    b.putString("name", name);
+                    b.putString("path", path);
+                    b.putString("type", type);
+                    b.putString("query", query_edit.getText().toString());
+                    Navigation.findNavController(view).navigate(R.id.tableViewFragment, b, new NavOptions.Builder()
+                            .setEnterAnim(android.R.animator.fade_in)
+                            .setExitAnim(android.R.animator.fade_out)
+                            .build());
+                }
+                else {
+                    Toast.makeText(requireContext(), R.string.empty_request_not_allowed, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-                Bundle b = new Bundle();
-                b.putString("name", name);
-                b.putString("path", path);
-                b.putString("type", type);
-                b.putString("query", query_edit.getText().toString());
-                Navigation.findNavController(view).navigate(R.id.tableViewFragment, b, new NavOptions.Builder()
-                        .setEnterAnim(android.R.animator.fade_in)
-                        .setExitAnim(android.R.animator.fade_out)
-                        .build());
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                query_edit.setText("");
             }
         });
 
