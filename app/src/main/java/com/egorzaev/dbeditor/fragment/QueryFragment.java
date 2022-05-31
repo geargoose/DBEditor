@@ -2,11 +2,14 @@ package com.egorzaev.dbeditor.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,51 +19,15 @@ import android.widget.Toast;
 
 import com.egorzaev.dbeditor.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link QueryFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class QueryFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public QueryFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment QueryFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static QueryFragment newInstance(String param1, String param2) {
-        QueryFragment fragment = new QueryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
 
@@ -78,6 +45,7 @@ public class QueryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_query, container, false);
 
         assert getArguments() != null;
+        setHasOptionsMenu(true);
 
         name = getArguments().getString("name");
         path = getArguments().getString("path");
@@ -100,8 +68,7 @@ public class QueryFragment extends Fragment {
                             .setEnterAnim(android.R.animator.fade_in)
                             .setExitAnim(android.R.animator.fade_out)
                             .build());
-                }
-                else {
+                } else {
                     Toast.makeText(requireContext(), R.string.empty_request_not_allowed, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -115,5 +82,10 @@ public class QueryFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.sample_menu, menu);
     }
 }

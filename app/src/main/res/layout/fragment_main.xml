@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.DatabaseEditorForAndroid"
-    tools:context=".fragment.MainFragment"
-    tools:layout_editor_absoluteY="81dp">
+    tools:context=".fragment.MainFragment">
 
     <ListView
         android:id="@+id/database_list"

@@ -1,6 +1,8 @@
 package com.egorzaev.dbeditor.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,12 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.egorzaev.dbeditor.Db;
-import com.egorzaev.dbeditor.MainActivity;
+import com.egorzaev.dbeditor.EditorActivity;
 import com.egorzaev.dbeditor.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class TableListFragment extends Fragment {
 
@@ -56,11 +57,17 @@ public class TableListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_table_list, container, false);
 
-        assert getArguments() != null;
+        // assert getArguments() != null;
 
-        name = getArguments().getString("name");
-        path = getArguments().getString("path");
-        type = getArguments().getString("type");
+        EditorActivity activity = (EditorActivity) getActivity();
+
+        // name = getArguments().getString("name");
+        // path = getArguments().getString("path");
+        // type = getArguments().getString("type");
+
+        name = activity.getParamsFromIntent().getStringExtra("name");
+        path = activity.getParamsFromIntent().getStringExtra("path");
+        type = activity.getParamsFromIntent().getStringExtra("type");
 
         query_fab = view.findViewById(R.id.query_fab);
         tables_list = view.findViewById(R.id.tables_list);
@@ -163,6 +170,7 @@ public class TableListFragment extends Fragment {
 
         return view;
     }
+
 
     // ================================end================================================
 }

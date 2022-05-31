@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +27,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.egorzaev.dbeditor.Db;
-import com.egorzaev.dbeditor.MainActivity;
 import com.egorzaev.dbeditor.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -64,7 +63,6 @@ public class MainFragment extends Fragment {
 
     // ================================begin==============================================
 
-
     // private static final String TAG = "ezaev";
 
     FloatingActionButton add_fab;
@@ -80,7 +78,8 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        //getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        // MyNav.a += 1;
+        // setHasOptionsMenu(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, 1);
@@ -95,7 +94,6 @@ public class MainFragment extends Fragment {
         if (!isExternalStorageReadable()) {
             Toast.makeText(getContext(), "Can't read files, check permissions", Toast.LENGTH_SHORT).show();
         }
-
         if (!isExternalStorageWritable()) {
             Toast.makeText(getContext(), "Can't write files, check permissions", Toast.LENGTH_SHORT).show();
         }
@@ -107,13 +105,10 @@ public class MainFragment extends Fragment {
         database_list = view.findViewById(R.id.database_list);
         add_fab = view.findViewById(R.id.add_fab);
 
-        // names.add("Built in db");
-        // paths.add("dbfiles");
-        // types.add("local");
-
         update_table(dbfiles);
 
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, names);
+
 
         add_fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,15 +156,32 @@ public class MainFragment extends Fragment {
             }
         });
 
+        database_list.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View view, DragEvent dragEvent) {
+                return false;
+            }
+        });
+
         database_list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
         dbfiles.close();
         db.close();
 
-
         return view;
     }
+
+    // @Override
+    // public void onDestroyView() {
+    //     super.onDestroyView();
+    //     MyNav.a -= 1;
+    // }
+
+    // @Override
+    // public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+    //     inflater.inflate(R.menu.sample_menu, menu);
+    // }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
