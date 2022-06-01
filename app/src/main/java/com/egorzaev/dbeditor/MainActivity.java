@@ -1,5 +1,6 @@
 package com.egorzaev.dbeditor;
 
+import android.animation.AnimatorInflater;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,9 +14,12 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavOptions;
@@ -28,8 +32,11 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "ezaev";
+    boolean fab_anim = true;
 
     FloatingActionButton add_fab;
+    FloatingActionButton open_fab;
+    FloatingActionButton menu_fab;
     ListView database_list;
 
     ArrayList<String> names;
@@ -64,6 +71,19 @@ public class MainActivity extends AppCompatActivity {
         types = new ArrayList<>();
 
         database_list = findViewById(R.id.db_list);
+        menu_fab = findViewById(R.id.menu_fab);
+        add_fab = findViewById(R.id.add_fab);
+        open_fab = findViewById(R.id.open_fab);
+
+        add_fab.setFocusable(false);
+        add_fab.setClickable(false);
+        add_fab.animate().translationY(82).alpha(0).setDuration(10).start();
+        add_fab.setVisibility(View.VISIBLE);
+
+        open_fab.setFocusable(false);
+        open_fab.setClickable(false);
+        open_fab.animate().translationY(150).alpha(0).setDuration(10).start();
+        open_fab.setVisibility(View.VISIBLE);
 
         update_table(dbfiles);
 
@@ -88,11 +108,66 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        menu_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setAnimatedFabOpen(fab_anim);
+                fab_anim = !fab_anim;
+            }
+        });
+
+        open_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: file creation dialog
+                Toast.makeText(MainActivity.this, "Если вы видите это сообщение,", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "то создание файла пока не работает", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "попробуйте создать файл через проводник", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "или запросите обновление у разработчика", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        add_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent picker = new Intent(Intent.ACTION_GET_CONTENT);
+                picker.setType("*/*");
+                startActivityForResult(picker, 1);
+            }
+        });
+
+
         database_list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
         dbfiles.close();
         db.close();
+    }
+
+    void setAnimatedFabOpen(boolean visibility) {
+        if (visibility) {
+            add_fab.animate().translationY(0).alpha(1).setDuration(200).start();
+            open_fab.animate().translationY(0).alpha(1).setDuration(200).start();
+            add_fab.setFocusable(true);
+            add_fab.setClickable(true);
+            open_fab.setFocusable(true);
+            open_fab.setClickable(true);
+        } else {
+            add_fab.setFocusable(false);
+            add_fab.setClickable(false);
+            open_fab.setFocusable(false);
+            open_fab.setClickable(false);
+            add_fab.animate().translationY(82).alpha(0).setDuration(200).start();
+            open_fab.animate().translationY(150).alpha(0).setDuration(200).start();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setAnimatedFabOpen(false);
+        fab_anim = true;
+
     }
 
     void update_table(SQLiteDatabase db) {

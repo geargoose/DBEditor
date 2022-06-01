@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -87,5 +88,19 @@ public class QueryFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.sample_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_help:  {
+                // TODO: help fragment
+                Toast.makeText(requireContext(), "Пока не могу помочь, поищите в гугле", Toast.LENGTH_LONG).show();
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 }

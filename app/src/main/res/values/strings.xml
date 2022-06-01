@@ -12,4 +12,7 @@
     <string name="empty_request_not_allowed">Can\'t run empty query!</string>
     <string name="settings">settings</string>
     <string name="done">done</string>
+    <string name="create_db">Create new database</string>
+    <string name="open_db">Open an existing database</string>
+    <string name="open_menu">Open menu</string>
 </resources>
