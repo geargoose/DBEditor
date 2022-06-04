@@ -10,4 +10,9 @@
     <string name="not_enough_permissions">Недостаточно разрешений для открытия файла базы данных</string>
     <string name="db_open_error_message">Ошибка при открытии базы данных. Возможно приложению не даны разрешения или файл базы данных отсутствует.</string>
     <string name="empty_request_not_allowed">Нельзя выполнить пустой запрос!</string>
+    <string name="settings">Настройки</string>
+    <string name="done">Готово</string>
+    <string name="create_db">Создать базу данных</string>
+    <string name="open_db">Открыть существующую базу данных</string>
+    <string name="open_menu">Открыть меню</string>
 </resources>

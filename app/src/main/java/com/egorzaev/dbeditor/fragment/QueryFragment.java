@@ -23,8 +23,7 @@ import com.egorzaev.dbeditor.R;
 public class QueryFragment extends Fragment {
 
 
-    public QueryFragment() {
-    }
+    public QueryFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,8 +93,12 @@ public class QueryFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_help:  {
-                // TODO: help fragment
-                Toast.makeText(requireContext(), "Пока не могу помочь, поищите в гугле", Toast.LENGTH_LONG).show();
+                // TODOne: help fragment
+                // Toast.makeText(requireContext(), "Пока не могу помочь, поищите в гугле", Toast.LENGTH_LONG).show();
+                Navigation.findNavController(requireView()).navigate(R.id.referenceFragment, null, new NavOptions.Builder()
+                        .setEnterAnim(android.R.animator.fade_in)
+                        .setExitAnim(android.R.animator.fade_out)
+                        .build());
                 return true;
             }
             default:

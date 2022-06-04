@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="ref_text" translatable="false"><![CDATA[
+        <h1>Команды SQL</h1>
+
+        <p>
+            Стандартными командами для взаимодействия с РБД являются CREATE, SELECT, INSERT, UPDATE,
+            DELETE и DROP. Эти команды могут быть классифицированы следующим образом:
+        </p>
+        <p>
+            <b>DDL — язык определения данных (Data Definition Language)</b>
+
+            1) CREATE Создает новую таблицу, представление таблицы или другой объект в БД
+            2) ALTER Модифицирует существующий в БД объект, такой как таблица
+            3) DROP Удаляет существующую таблицу, представление таблицы или другой объект в БД
+
+            <b>DML — язык изменения данных (Data Manipulation Language)</b>
+
+            1) SELECT Извлекает записи из одной или нескольких таблиц
+            2) INSERT Создает записи
+            3) UPDATE Модифицирует записи
+            4) DELETE Удаляет записи
+        </p>
+
+            <h2>Примеры синтаксиса:</h2>
+            <h3>Выборка</h3>
+        <p>
+            SELECT col1, col2, ...colN
+            FROM tableName;
+        </p>
+        <p>
+            SELECT DISTINCT col1, col2, ...colN
+            FROM tableName;
+        </p>
+        <p>
+            SELECT col1, col2, ...colN
+            FROM tableName
+            WHERE condition;
+        </p>
+        <p>
+            SELECT col1, col2, ...colN
+            FROM tableName
+            WHERE condition1 AND|OR condition2;
+        </p>
+        <p>
+            SELECT col2, col2, ...colN
+            FROM tableName
+            WHERE colName IN (val1, val2, ...valN);
+        </p>
+        <p>
+            SELECT col1, col2, ...colN
+            FROM tableName
+            WHERE colName BETWEEN val1 AND val2;
+        </p>
+        <p>
+            SELECT col1, col2, ...colN
+            FROM tableName
+            WHERE colName LIKE pattern;
+        </p>
+        <p>
+            SELECT col1, col2, ...colN
+            FROM tableName
+            WHERE condition
+            ORDER BY colName [ASC|DESC];
+        </p>
+        <p>
+            SELECT SUM(colName)
+            FROM tableName
+            WHERE condition
+            GROUP BY colName;
+        </p>
+        <p>
+            SELECT COUNT(colName)
+            FROM tableName
+            WHERE condition;
+        </p>
+        <p>
+            SELECT SUM(colName)
+            FROM tableName
+            WHERE condition
+            GROUP BY colName
+            HAVING (function condition);
+        </p>
+        <p>
+            -- создание таблицы
+            CREATE TABLE tableName (
+            col1 datatype,
+            col2 datatype,
+            ...
+            colN datatype,
+            PRIMARY KEY (одна или более колонка)
+            );
+        </p>
+        <p>
+            -- удаление таблицы
+            DROP TABLE tableName;
+        </p>
+        <p>
+            -- создание индекса
+            CREATE UNIQUE INDEX indexName
+            ON tableName (col1, col2, ...colN);
+        </p>
+        <p>
+            -- удаление индекса
+            ALTER TABLE tableName
+            DROP INDEX indexName;
+        </p>
+        <p>
+            -- получение описания структуры таблицы
+            DESC tableName;
+        </p>
+        <p>
+            -- очистка таблицы
+            TRUNCATE TABLE tableName;
+        </p>
+        <p>
+            -- добавление/удаление/модификация колонок
+            ALTER TABLE tableName ADD|DROP|MODIFY colName [datatype];
+        </p>
+        <p>
+            -- переименование таблицы
+            ALTER TABLE tableName RENAME TO newTableName;
+        </p>
+        <p>
+            -- вставка значений
+            INSERT INTO tableName (col1, col2, ...colN)
+            VALUES (val1, val2, ...valN)
+        </p>
+        <p>
+            -- обновление записей
+            UPDATE tableName
+            SET col1 = val1, col2 = val2, ...colN = valN
+            [WHERE condition];
+        </p>
+        <p>
+            -- удаление записей
+            DELETE FROM tableName
+            WHERE condition;
+        </p>
+        <p>
+            -- создание БД
+            CREATE DATABASE [IF NOT EXISTS] dbName;
+        </p>
+        <p>
+            -- удаление БД
+            DROP DATABASE [IF EXISTS] dbName;
+        </p>
+        <p>
+            -- выбор БД
+            USE dbName;
+        </p>
+        <p>
+            -- завершения транзакции
+            COMMIT;
+        </p>
+        <p>
+            -- отмена изменений
+            ROLLBACK;
+        </p>
+    ]]></string>
+</resources>
