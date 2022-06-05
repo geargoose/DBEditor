@@ -1,17 +1,10 @@
 package com.egorzaev.dbeditor.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import com.egorzaev.dbeditor.Db;
 import com.egorzaev.dbeditor.EditorActivity;
@@ -32,14 +29,6 @@ public class TableListFragment extends Fragment {
 
     public TableListFragment() {
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-
-    // ================================begin==============================================
 
 
     String name;
@@ -80,7 +69,7 @@ public class TableListFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Bundle b =  new Bundle();
+                Bundle b = new Bundle();
                 b.putString("name", name);
                 b.putString("path", path);
                 b.putString("type", type);
@@ -104,8 +93,7 @@ public class TableListFragment extends Fragment {
 
         try {
             database = db.getReadableDatabase();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             Toast.makeText(getContext(), "Failed to open database", Toast.LENGTH_LONG).show();
             // startActivity(new Intent(TableListActivity.this, MainActivity.class));
         }
@@ -158,8 +146,7 @@ public class TableListFragment extends Fragment {
             });
 
             database.close();
-        }
-        else {
+        } else {
             error_label.setText(R.string.db_open_error_message);
             error_label.setVisibility(View.VISIBLE);
             query_fab.setClickable(false);

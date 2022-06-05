@@ -1,12 +1,6 @@
 package com.egorzaev.dbeditor.fragment;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,12 +12,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
+
 import com.egorzaev.dbeditor.R;
 
 public class QueryFragment extends Fragment {
 
 
-    public QueryFragment() {}
+    public QueryFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,7 +92,7 @@ public class QueryFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_help:  {
+            case R.id.action_help: {
                 // TODOne: help fragment
                 // Toast.makeText(requireContext(), "Пока не могу помочь, поищите в гугле", Toast.LENGTH_LONG).show();
                 Navigation.findNavController(requireView()).navigate(R.id.referenceFragment, null, new NavOptions.Builder()

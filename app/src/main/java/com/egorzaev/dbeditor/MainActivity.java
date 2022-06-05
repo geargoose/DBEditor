@@ -1,6 +1,5 @@
 package com.egorzaev.dbeditor;
 
-import android.animation.AnimatorInflater;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -10,21 +9,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -51,9 +45,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         String request = "CREATE TABLE IF NOT EXISTS dbfiles (\n" +
                 "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "    name text NOT NULL,\n" +
@@ -76,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         add_fab = findViewById(R.id.add_fab);
         open_fab = findViewById(R.id.open_fab);
 
+        adapter = new ArrayAdapter<>(getBaseContext(), R.layout.layout_db_item, R.id.label, names);
+
         add_fab.setFocusable(false);
         add_fab.setClickable(false);
         add_fab.animate().translationY(82).alpha(0).setDuration(10).start();
@@ -86,8 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
         update_table(dbfiles);
 
-        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, names);
-
         database_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -95,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("name", names.get(position));
                 intent.putExtra("path", paths.get(position));
                 intent.putExtra("type", types.get(position));
+                // intent.putExtra("db", db);
                 startActivity(intent);
 
                 // Bundle b = new Bundle();
@@ -169,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
         setAnimatedFabOpen(false);
         fab_anim = true;
-
     }
 
     void update_table(SQLiteDatabase db) {

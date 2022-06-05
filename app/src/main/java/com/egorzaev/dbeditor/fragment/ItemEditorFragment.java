@@ -5,9 +5,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +13,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.egorzaev.dbeditor.Db;
 import com.egorzaev.dbeditor.R;
@@ -114,8 +113,7 @@ public class ItemEditorFragment extends Fragment {
                     if (i == cols.size() - 1) {
                         query_before.append(cols.get(i)).append(" = '").append(vals.get(i)).append("'");
                         query_after.append(cols.get(i)).append(" = '").append(edits.get(i).getText().toString()).append("'");
-                    }
-                    else {
+                    } else {
                         query_before.append(cols.get(i)).append(" = '").append(vals.get(i)).append("' AND ");
                         query_after.append(cols.get(i)).append(" = '").append(edits.get(i).getText().toString()).append("', ");
                     }
@@ -134,8 +132,7 @@ public class ItemEditorFragment extends Fragment {
                             cursor.moveToNext();
                         }
                     }
-                }
-                catch (android.database.sqlite.SQLiteConstraintException e) {
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
                     Toast.makeText(getContext(), "Ошибка в данных", Toast.LENGTH_SHORT).show();
                 }
 

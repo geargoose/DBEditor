@@ -76,12 +76,6 @@ public class TableViewFragment extends Fragment {
         spinner.setVisibility(View.VISIBLE);
         empty.setVisibility(View.GONE);
 
-        if (query != null) {
-            runQuery(query);
-        } else {
-            runQuery("SELECT * FROM " + table);
-        }
-
         return view;
     }
 
@@ -89,6 +83,11 @@ public class TableViewFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        if (query != null) {
+            runQuery(query);
+        } else {
+            runQuery("SELECT * FROM " + table);
+        }
 
         mWorkManager.getWorkInfoByIdLiveData(queryRequest.getId()).observe(this, new Observer<WorkInfo>() {
             @Override
@@ -182,7 +181,6 @@ public class TableViewFragment extends Fragment {
             }
         });
     }
-
 
 
     //@Override

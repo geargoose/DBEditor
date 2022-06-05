@@ -2,20 +2,20 @@ package com.egorzaev.dbeditor.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import com.egorzaev.dbeditor.R;
 
 public class ReferenceFragment extends Fragment {
 
-    public ReferenceFragment() {}
+    public ReferenceFragment() {
+    }
 
     TextView tv;
 

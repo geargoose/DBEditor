@@ -1,31 +1,41 @@
 package com.egorzaev.dbeditor;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.fragment.app.Fragment;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
-import java.util.HashMap;
-import java.util.Map;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class EditorActivity extends AppCompatActivity {
+
+    // Db db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
+        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().penaltyDialog().build();
+        //StrictMode.setThreadPolicy(policy);
+        //db = new Db(this, getIntent().getStringExtra("path"), null, 1);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
+    // @Override
+    // protected void onStop() {
+    //     super.onStop();
+    //     db.close();
+    // }
+
     public Intent getParamsFromIntent() {
         return getIntent();
     }
+
+    // public Db getDb() {
+    //     return db;
+    // }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

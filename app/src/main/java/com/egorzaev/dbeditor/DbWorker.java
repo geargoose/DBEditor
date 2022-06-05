@@ -1,22 +1,14 @@
 package com.egorzaev.dbeditor;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.CharArrayBuffer;
-import android.database.ContentObserver;
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-
-import java.util.HashMap;
 
 public class DbWorker extends Worker {
 
@@ -86,7 +78,7 @@ public class DbWorker extends Worker {
 
             e.printStackTrace();
             Log.e("ezaev", "doWork: " + e.toString());
-            return Result.failure();
+            return Result.failure(new Data.Builder().putString("error", e.toString()).build());
 
         }
     }

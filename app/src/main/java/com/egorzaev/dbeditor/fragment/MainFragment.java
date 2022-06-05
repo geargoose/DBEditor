@@ -42,27 +42,6 @@ public class MainFragment extends Fragment {
     public MainFragment() {
     }
 
-    public static MainFragment newInstance() {
-        MainFragment fragment = new MainFragment();
-        Bundle args = new Bundle();
-        // args.putString(ARG_PARAM1, param1);
-        // args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // if (getArguments() != null) {
-        //     mParam1 = getArguments().getString(ARG_PARAM1);
-        //     mParam2 = getArguments().getString(ARG_PARAM2);
-        // }
-    }
-
-
-    // ================================begin==============================================
-
     // private static final String TAG = "ezaev";
 
     FloatingActionButton add_fab;
@@ -259,8 +238,7 @@ public class MainFragment extends Fragment {
                 final String id = DocumentsContract.getDocumentId(uri);
                 try {
                     uri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
-                }
-                catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     if (id.contains("raw:")) {
                         return id.substring(4);
                     } else {
@@ -333,8 +311,6 @@ public class MainFragment extends Fragment {
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
-
-    
 
     // ================================end================================================
 }
