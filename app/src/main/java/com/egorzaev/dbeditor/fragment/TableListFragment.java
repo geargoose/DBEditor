@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,8 @@ import java.util.ArrayList;
 
 public class TableListFragment extends Fragment {
 
+    private static final String TAG = "ezaev";
+
     public TableListFragment() {
     }
 
@@ -40,6 +44,9 @@ public class TableListFragment extends Fragment {
     ArrayAdapter<String> adapter;
     TextView table_label;
     TextView error_label;
+
+    Db db;
+    SQLiteDatabase database;
 
     @SuppressLint("Range")
     @Override
@@ -88,8 +95,8 @@ public class TableListFragment extends Fragment {
 
         // getContext().getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Db db = new Db(getContext(), path, null, 1);
-        SQLiteDatabase database = null;
+        db = new Db(getContext(), path, null, 1);
+        database = null;
 
         try {
             database = db.getReadableDatabase();
@@ -137,7 +144,7 @@ public class TableListFragment extends Fragment {
                     b.putString("type", type);
                     b.putString("table", tableNames.get(i));
                     // database.close();
-                    db.close();
+                    // db.close();
                     Navigation.findNavController(view).navigate(R.id.tableViewFragment, b, new NavOptions.Builder()
                             .setEnterAnim(android.R.animator.fade_in)
                             .setExitAnim(android.R.animator.fade_out)
@@ -145,19 +152,55 @@ public class TableListFragment extends Fragment {
                 }
             });
 
-            database.close();
+            tables_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Log.d("ezaev", "onItemLongClick: " + "DROP TABLE " + tableNames.get(i));
+                    // Log.d("ezaev", "onItemLongClick: ");
+                    try {
+                        Cursor deleteCursor = database.rawQuery("DROP TABLE " + tableNames.get(i), null);
+                        Log.d(TAG, "onItemLongClick: " + deleteCursor.getCount());
+                        deleteCursor.close();
+                    }
+                    catch (SQLiteException e) {
+                        Log.e(TAG, "onItemLongClick: ", e);
+                        Toast.makeText(activity, R.string.failed_to_drop, Toast.LENGTH_SHORT).show();
+                    }
+
+
+
+                    tableNames.clear();
+
+                    Cursor c = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+
+                    if (c.moveToFirst()) {
+                        while (!c.isAfterLast()) {
+                            tableNames.add(c.getString(c.getColumnIndex("name")));
+                            c.moveToNext();
+                        }
+                    }
+
+                    c.close();
+
+                    adapter.notifyDataSetChanged();
+                    return true;
+                }
+            });
+
         } else {
             error_label.setText(R.string.db_open_error_message);
             error_label.setVisibility(View.VISIBLE);
             query_fab.setClickable(false);
         }
-
-
-        db.close();
-
         return view;
     }
 
-
-    // ================================end================================================
+    @Override
+    public void onStop () {
+        super.onStop();
+        if (database != null) {
+            database.close();
+        }
+        db.close();
+    }
 }

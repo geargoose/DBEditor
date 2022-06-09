@@ -86,7 +86,7 @@ public class QueryFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.sample_menu, menu);
+        inflater.inflate(R.menu.query_top_menu, menu);
     }
 
     @Override
@@ -104,6 +104,5 @@ public class QueryFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 }

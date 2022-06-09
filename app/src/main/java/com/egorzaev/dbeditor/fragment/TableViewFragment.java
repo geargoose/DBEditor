@@ -4,6 +4,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,6 +15,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -60,6 +64,8 @@ public class TableViewFragment extends Fragment {
 
         assert getArguments() != null;
 
+        setHasOptionsMenu(true);
+
         mWorkManager = WorkManager.getInstance(requireContext());
         mSavedWorkInfo = mWorkManager.getWorkInfosByTagLiveData("queryWork");
 
@@ -76,20 +82,39 @@ public class TableViewFragment extends Fragment {
         spinner.setVisibility(View.VISIBLE);
         empty.setVisibility(View.GONE);
 
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
         if (query != null) {
             runQuery(query);
         } else {
             runQuery("SELECT * FROM " + table);
         }
 
-        mWorkManager.getWorkInfoByIdLiveData(queryRequest.getId()).observe(this, new Observer<WorkInfo>() {
+        return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.table_view_top_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_update: {
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // clear_table();
+        // spinner.setVisibility(View.VISIBLE);
+
+        mWorkManager.getWorkInfoByIdLiveData(queryRequest.getId()).observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
             @Override
             public void onChanged(WorkInfo workInfo) {
                 boolean finished = workInfo.getState().isFinished();
@@ -97,89 +122,64 @@ public class TableViewFragment extends Fragment {
                     Data output = workInfo.getOutputData();
                     Log.d("ezaev", "onResume: " + output.toString());
 
-                    int rows = output.getInt("qty", 0);
-                    String[] cols = output.getStringArray("cols");
-
-                    assert cols != null;
-
-                    TableRow titles = new TableRow(getContext());
-                    for (String name : cols) {
-                        TextView textView = new TextView(getContext());
-                        textView.setText(name);
-                        titles.addView(textView);
-                    }
-                    table_view.addView(titles);
-
-                    for (int i = 0; i < rows; i++) {
-                        TableRow row = new TableRow(getContext());
-                        String[] vals = output.getStringArray(String.valueOf(i));
-
-                        View.OnClickListener edit_action = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Bundle b = new Bundle();
-                                b.putString("name", name);
-                                b.putString("path", path);
-                                b.putString("type", type);
-                                b.putString("table", table);
-                                b.putStringArray("coords", vals);
-                                Navigation.findNavController(requireView()).navigate(R.id.itemEditorFragment, b, new NavOptions.Builder()
-                                        .setEnterAnim(android.R.animator.fade_in)
-                                        .setExitAnim(android.R.animator.fade_out)
-                                        .build());
-                            }
-                        };
-
-                        if (vals != null) {
-                            for (String val : vals) {
-                                Button button = new Button(getContext());
-                                button.setText(val);
-                                button.setOnClickListener(edit_action);
-                                row.addView(button);
-                            }
-                        }
-                        table_view.addView(row);
-                    }
-
-                    /*
-                    if (c.getCount() > 0) {
-                        c.moveToFirst();
-                        do {
-                            TableRow row = new TableRow(getContext());
-                            String[] al = new String[c.getColumnCount()];
-                            for (int i = 0; i < c.getColumnCount(); i++) {
-                                al[i] = c.getString(i);
-                            }
-                            View.OnClickListener edit_action = new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Bundle b = new Bundle();
-                                    b.putString("name", name);
-                                    b.putString("path", path);
-                                    b.putString("type", type);
-                                    b.putString("table", table);
-                                    b.putStringArray("coords", al);
-                                    Navigation.findNavController(getView()).navigate(R.id.itemEditorFragment, b, new NavOptions.Builder()
-                                            .setEnterAnim(android.R.animator.fade_in)
-                                            .setExitAnim(android.R.animator.fade_out)
-                                            .build());
-                                }
-                            };
-                            for (int i = 0; i < c.getColumnCount(); i++) {
-                                Button button = new Button(getContext()); // c.getString(i)
-                                button.setText(c.getString(i));
-                                button.setOnClickListener(edit_action);
-                                row.addView(button);
-                            }
-                            table_view.addView(row);
-                        } while (c.moveToNext());
-                    }
-                    */
-
-                    spinner.setVisibility(View.GONE);
+                    clear_table();
+                    fill_table(output);
                 }
             }
         });
+
+    }
+
+    void fill_table(Data output) {
+        int rows = output.getInt("qty", 0);
+        String[] cols = output.getStringArray("cols");
+
+        assert cols != null;
+
+        TableRow titles = new TableRow(getContext());
+        for (String name : cols) {
+            TextView textView = new TextView(getContext());
+            textView.setText(name);
+            titles.addView(textView);
+        }
+        table_view.addView(titles);
+
+        for (int i = 0; i < rows; i++) {
+            TableRow row = new TableRow(getContext());
+            String[] vals = output.getStringArray(String.valueOf(i));
+
+            View.OnClickListener edit_action = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle b = new Bundle();
+                    b.putString("name", name);
+                    b.putString("path", path);
+                    b.putString("type", type);
+                    b.putString("table", table);
+                    b.putStringArray("coords", vals);
+                    Navigation.findNavController(requireView()).navigate(R.id.itemEditorFragment, b, new NavOptions.Builder()
+                            .setEnterAnim(android.R.animator.fade_in)
+                            .setExitAnim(android.R.animator.fade_out)
+                            .build());
+                }
+            };
+
+            if (vals != null) {
+                for (String val : vals) {
+                    Button button = new Button(getContext());
+                    button.setText(val);
+                    button.setOnClickListener(edit_action);
+                    row.addView(button);
+                }
+            }
+            table_view.addView(row);
+        }
+
+        spinner.setVisibility(View.GONE);
+    }
+
+    void clear_table() {
+        table_view.removeAllViews();
     }
 
 

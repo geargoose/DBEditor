@@ -15,4 +15,7 @@
     <string name="create_db">Create new database</string>
     <string name="open_db">Open an existing database</string>
     <string name="open_menu">Open menu</string>
+    <string name="update_table">Update table</string>
+    <string name="open_reference">Open reference</string>
+    <string name="failed_to_drop">Failed to drop the table</string>
 </resources>

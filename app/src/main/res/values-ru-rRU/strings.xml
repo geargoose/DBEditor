@@ -15,4 +15,7 @@
     <string name="create_db">Создать базу данных</string>
     <string name="open_db">Открыть существующую базу данных</string>
     <string name="open_menu">Открыть меню</string>
+    <string name="update_table">Обновить таблицу</string>
+    <string name="open_reference">Открыть справку</string>
+    <string name="failed_to_drop">Не удалось удалить таблицу</string>
 </resources>

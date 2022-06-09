@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         add_fab = findViewById(R.id.add_fab);
         open_fab = findViewById(R.id.open_fab);
 
-        adapter = new ArrayAdapter<>(getBaseContext(), R.layout.layout_db_item, R.id.label, names);
+        adapter = new ArrayAdapter<>(this, R.layout.db_item_layout, R.id.label, names);
 
         add_fab.setFocusable(false);
         add_fab.setClickable(false);

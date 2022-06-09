@@ -159,7 +159,7 @@ public class MainFragment extends Fragment {
 
     // @Override
     // public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-    //     inflater.inflate(R.menu.sample_menu, menu);
+    //     inflater.inflate(R.menu.query_top_menu, menu);
     // }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
