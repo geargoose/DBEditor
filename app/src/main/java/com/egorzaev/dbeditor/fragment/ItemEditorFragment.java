@@ -23,7 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ItemEditorFragment extends Fragment {
+public class ItemEditorFragment extends MyFragment {
 
     public ItemEditorFragment() {
         // Required empty public constructor

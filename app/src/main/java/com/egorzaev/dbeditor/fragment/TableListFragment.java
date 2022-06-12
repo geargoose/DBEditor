@@ -16,6 +16,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
@@ -27,7 +30,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class TableListFragment extends Fragment {
+public class TableListFragment extends MyFragment {
 
     private static final String TAG = "ezaev";
 
@@ -193,6 +196,21 @@ public class TableListFragment extends Fragment {
             query_fab.setClickable(false);
         }
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Toolbar myToolbar = view.findViewById(R.id.myToolbar);
+
+        myToolbar.setTitle(R.string.app_name);
+        // myToolbar.inflateMenu(R.menu.query_top_menu);
+        myToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
     }
 
     @Override

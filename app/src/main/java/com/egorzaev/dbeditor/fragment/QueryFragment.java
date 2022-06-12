@@ -11,15 +11,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.egorzaev.dbeditor.R;
 
-public class QueryFragment extends Fragment {
+public class QueryFragment extends MyFragment {
 
 
     public QueryFragment() {
@@ -32,6 +34,7 @@ public class QueryFragment extends Fragment {
 
 
     TextView db_label;
+    Toolbar myToolbar;
     EditText query_edit;
     Button execute;
     Button clear;
@@ -54,6 +57,7 @@ public class QueryFragment extends Fragment {
         execute = view.findViewById(R.id.executeButton);
         clear = view.findViewById(R.id.clearButton);
         query_edit = view.findViewById(R.id.queryTextEdit);
+        myToolbar = view.findViewById(R.id.myToolbar);
 
         execute.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +78,17 @@ public class QueryFragment extends Fragment {
             }
         });
 
+        myToolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_help:
+                    // Navigate to settings screen
+                    Toast.makeText(getContext(), "Hello", Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+                    return false;
+            }
+        });
+
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,6 +98,24 @@ public class QueryFragment extends Fragment {
 
         return view;
     }
+
+    /*
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        myToolbar.setTitle(R.string.app_name);
+        // myToolbar.inflateMenu(R.menu.query_top_menu);
+        myToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getContext(), "bye", Toast.LENGTH_SHORT).show();
+                //getActivity().getSupportFragmentManager().popBackStack();
+                getParentFragmentManager().popBackStack();
+            }
+        });
+    }
+     */
+
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {

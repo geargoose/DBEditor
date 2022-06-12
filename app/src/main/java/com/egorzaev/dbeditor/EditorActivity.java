@@ -19,8 +19,14 @@ public class EditorActivity extends AppCompatActivity {
         //StrictMode.setThreadPolicy(policy);
         //db = new Db(this, getIntent().getStringExtra("path"), null, 1);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeButtonEnabled(true);
+        try {
+            getSupportActionBar().hide();
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     // @Override

@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.egorzaev.dbeditor.R;
 
-public class ReferenceFragment extends Fragment {
+public class ReferenceFragment extends MyFragment {
 
     public ReferenceFragment() {
     }

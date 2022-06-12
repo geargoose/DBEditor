@@ -31,7 +31,7 @@ import com.egorzaev.dbeditor.R;
 
 import java.util.List;
 
-public class TableViewFragment extends Fragment {
+public class TableViewFragment extends MyFragment {
 
     public TableViewFragment() {
     }

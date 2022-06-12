@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.egorzaev.dbeditor.R;
 
-public class NewTableFragment extends Fragment {
+public class NewTableFragment extends MyFragment {
 
     public NewTableFragment() {}
 
