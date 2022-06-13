@@ -2,6 +2,7 @@ package com.egorzaev.dbeditor;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -15,18 +16,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "ezaev";
+    static final boolean SANDBOX_ENABLED = true;
     boolean fab_anim = true;
 
     FloatingActionButton add_fab;
@@ -53,9 +60,29 @@ public class MainActivity extends AppCompatActivity {
                 "    path text NOT NULL\n" +
                 ");\n";
 
+        String drop_sandbox_request = "DROP TABLE IF EXISTS sandbox";
+
+        String sandbox_request = "CREATE TABLE IF NOT EXISTS sandbox (\n" +
+                "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "    col1 text,\n" +
+                "    col2 text,\n" +
+                "    col3 text,\n" +
+                "    col4 text\n" +
+                ");\n";
+
+        Db sandboxDb = new Db(this, "sandbox", null, 1);
+        SQLiteDatabase sandboxDbReadableDatabase = sandboxDb.getReadableDatabase();
+        sandboxDbReadableDatabase.execSQL(drop_sandbox_request);
+        sandboxDbReadableDatabase.execSQL(sandbox_request);
+        sandboxDbReadableDatabase.close();
+        sandboxDb.close();
+
+
         Db db = new Db(this, "dbfiles", null, 1);
         SQLiteDatabase dbfiles = db.getReadableDatabase();
         dbfiles.execSQL(request);
+
+
 
 
         names = new ArrayList<>();
@@ -121,10 +148,42 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // TODO: file creation dialog
-                Toast.makeText(MainActivity.this, "Если вы видите это сообщение,", Toast.LENGTH_LONG).show();
-                Toast.makeText(MainActivity.this, "то создание файла пока не работает", Toast.LENGTH_LONG).show();
-                Toast.makeText(MainActivity.this, "попробуйте создать файл через проводник", Toast.LENGTH_LONG).show();
-                Toast.makeText(MainActivity.this, "или запросите обновление у разработчика", Toast.LENGTH_LONG).show();
+                // Toast.makeText(MainActivity.this, "Если вы видите это сообщение,", Toast.LENGTH_LONG).show();
+                // Toast.makeText(MainActivity.this, "то создание файла пока не работает", Toast.LENGTH_LONG).show();
+                // Toast.makeText(MainActivity.this, "попробуйте создать файл через проводник", Toast.LENGTH_LONG).show();
+                // Toast.makeText(MainActivity.this, "или запросите обновление у разработчика", Toast.LENGTH_LONG).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Создать новый файл");
+
+                final EditText input = new EditText(MainActivity.this);
+                // input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                input.setText(R.string.path_storage_emulated);
+                input.setHint(R.string.path_storage_emulated);
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //m_Text = input.getText().toString();
+                        Toast.makeText(MainActivity.this, input.getText().toString(), Toast.LENGTH_SHORT).show();
+                        try {
+                            FileOutputStream fOut = openFileOutput(input.getText().toString(), MODE_WORLD_WRITEABLE);
+                            OutputStreamWriter osw = new OutputStreamWriter(fOut);
+                            osw.write("");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -170,9 +229,13 @@ public class MainActivity extends AppCompatActivity {
                 names.clear();
                 paths.clear();
                 types.clear();
-                // names.add("Built in db");
-                // paths.add("dbfiles");
-                // types.add("local");
+
+                if (SANDBOX_ENABLED) {
+                    names.add("Sandbox");
+                    paths.add("sandbox");
+                    types.add("local");
+                }
+
                 c.moveToFirst();
                 do {
                     names.add(c.getString(1));

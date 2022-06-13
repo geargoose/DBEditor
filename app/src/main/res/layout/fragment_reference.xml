@@ -27,7 +27,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/ref_text"
-                android:textIsSelectable="true" />
+                android:textIsSelectable="true">
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="тык сюда" />
+
+            </TextView>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

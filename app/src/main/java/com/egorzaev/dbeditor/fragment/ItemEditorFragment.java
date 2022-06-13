@@ -14,7 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 
 import com.egorzaev.dbeditor.Db;
 import com.egorzaev.dbeditor.R;
@@ -25,16 +27,9 @@ import java.util.Arrays;
 
 public class ItemEditorFragment extends MyFragment {
 
-    public ItemEditorFragment() {
-        // Required empty public constructor
-    }
+    private static final String TAG = "ezaev";
 
-    public static ItemEditorFragment newInstance() {
-        ItemEditorFragment fragment = new ItemEditorFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
+    public ItemEditorFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +77,6 @@ public class ItemEditorFragment extends MyFragment {
 
         // c.close();
 
-        // TODO: make it works
         for (int i = 0; i < cols.size(); i++) {
             EditText e = new EditText(getContext());
             e.setHint(cols.get(i));
@@ -95,6 +89,35 @@ public class ItemEditorFragment extends MyFragment {
         tv.setText(Arrays.toString(coords));
         ll.addView(tv);
 
+        StringBuilder query_before = new StringBuilder();
+        StringBuilder query_after = new StringBuilder();
+
+        for (int i = 0; i < cols.size(); i++) {
+            if (i == cols.size() - 1) {
+                query_before.append(cols.get(i)).append(" = '").append(vals.get(i)).append("'");
+                query_after.append(cols.get(i)).append(" = '").append(edits.get(i).getText().toString()).append("'");
+            } else {
+                query_before.append(cols.get(i)).append(" = '").append(vals.get(i)).append("' AND ");
+                query_after.append(cols.get(i)).append(" = '").append(edits.get(i).getText().toString()).append("', ");
+            }
+        }
+
+        Toolbar myToolbar = view.findViewById(R.id.myToolbar);
+        myToolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    // Navigate to settings screen
+                    Cursor cursor = database.rawQuery("DELETE FROM " + table + " WHERE " + query_before + "", null);
+                    Log.d(TAG, "onCreateView: " + "DELETE FROM " + table + " WHERE " + query_before + "");
+                    Log.d(TAG, "onCreateView: " + cursor.getColumnCount());
+                    cursor.close();
+                    Toast.makeText(getContext(), "delete", Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+                    return false;
+            }
+        });
+
         save_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,20 +129,7 @@ public class ItemEditorFragment extends MyFragment {
 
                 Log.d("MYTAG", "onClick: " + cv);
 
-                StringBuilder query_before = new StringBuilder();
-                StringBuilder query_after = new StringBuilder();
-
-                for (int i = 0; i < cols.size(); i++) {
-                    if (i == cols.size() - 1) {
-                        query_before.append(cols.get(i)).append(" = '").append(vals.get(i)).append("'");
-                        query_after.append(cols.get(i)).append(" = '").append(edits.get(i).getText().toString()).append("'");
-                    } else {
-                        query_before.append(cols.get(i)).append(" = '").append(vals.get(i)).append("' AND ");
-                        query_after.append(cols.get(i)).append(" = '").append(edits.get(i).getText().toString()).append("', ");
-                    }
-                }
-
-                Log.d("MYTAG", "request: " + "UPDATE " + table + " SET " + query_after + " WHERE " + query_before + "");
+                Log.d(TAG, "request: " + "UPDATE " + table + " SET " + query_after + " WHERE " + query_before + "");
 
                 Cursor cursor = database.rawQuery("UPDATE " + table + " SET " + query_after + " WHERE " + query_before + "", null);
 
@@ -142,5 +152,12 @@ public class ItemEditorFragment extends MyFragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //Toolbar myToolbar = view.findViewById(R.id.myToolbar);
+        //myToolbar.inflateMenu(R.menu.item_editor_top_menu);
     }
 }

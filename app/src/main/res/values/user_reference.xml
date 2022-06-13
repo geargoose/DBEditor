@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string name="ref_text" translatable="false"><![CDATA[
+<string name="ref_text" translatable="false">
         <h1>Команды SQL</h1>
 
         <p>
@@ -157,5 +157,5 @@
             -- отмена изменений
             ROLLBACK;
         </p>
-    ]]></string>
+    </string>
 </resources>

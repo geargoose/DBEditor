@@ -18,4 +18,5 @@
     <string name="update_table">Update table</string>
     <string name="open_reference">Open reference</string>
     <string name="failed_to_drop">Failed to drop the table</string>
+    <string name="path_storage_emulated" translatable="false">/storage/emulated/</string>
 </resources>
