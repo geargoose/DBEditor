@@ -56,6 +56,9 @@
         <action
             android:id="@+id/action_queryFragment_to_referenceFragment"
             app:destination="@id/referenceFragment" />
+        <action
+            android:id="@+id/action_queryFragment_to_learningFragment"
+            app:destination="@id/learningFragment" />
     </fragment>
     <fragment
         android:id="@+id/tableViewFragment"
@@ -121,4 +124,9 @@
         android:name="com.egorzaev.dbeditor.fragment.ReferenceFragment"
         android:label="fragment_reference"
         tools:layout="@layout/fragment_reference" />
+    <fragment
+        android:id="@+id/learningFragment"
+        android:name="com.egorzaev.dbeditor.fragment.LearningFragment"
+        android:label="fragment_learning"
+        tools:layout="@layout/fragment_learning" />
 </navigation>

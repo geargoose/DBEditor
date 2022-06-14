@@ -57,7 +57,7 @@ public class QueryFragment extends MyFragment {
         myToolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_help:
-                    Navigation.findNavController(requireView()).navigate(R.id.referenceFragment, null, new NavOptions.Builder()
+                    Navigation.findNavController(requireView()).navigate(R.id.learningFragment, null, new NavOptions.Builder()
                             .setEnterAnim(android.R.animator.fade_in)
                             .setExitAnim(android.R.animator.fade_out)
                             .build());

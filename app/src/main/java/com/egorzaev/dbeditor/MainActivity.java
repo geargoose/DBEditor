@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
                 "    path text NOT NULL\n" +
                 ");\n";
 
-        String drop_sandbox_request = "DROP TABLE IF EXISTS sandbox";
+        String drop_sandbox_request = "DROP TABLE IF EXISTS table_1";
 
-        String sandbox_request = "CREATE TABLE IF NOT EXISTS sandbox (\n" +
+        String sandbox_request = "CREATE TABLE IF NOT EXISTS table_1 (\n" +
                 "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "    col1 text,\n" +
                 "    col2 text,\n" +

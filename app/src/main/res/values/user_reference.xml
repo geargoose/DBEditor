@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string name="ref_text" translatable="false">
+    <string name="ref_text" translatable="false">
         <h1>Команды SQL</h1>
 
         <p>
@@ -157,5 +157,20 @@
             -- отмена изменений
             ROLLBACK;
         </p>
+    </string>
+
+    <string name="ref_select_1" translatable="false">
+        <![CDATA[Для начала, получим из таблицы "table_1" элемент, у которого поле id равно 3:]]></string>
+    <string name="ref_select_1_code" translatable="false">
+        <![CDATA[SELECT * FROM table_1 WHERE id = 3]]>
+    </string>
+    <string name="ref_select_2" translatable="false">
+        <![CDATA[Перейдём к более сложному примеру: получим все элементы, id которых меньше, чем 4:]]>
+    </string>
+    <string name="ref_select_2_code" translatable="false">
+        SELECT * FROM table_1 WHERE id &lt; 4
+    </string>
+    <string name="ref_insert_1_code" translatable="false">
+        <![CDATA[INSERT table_1(col1, col2, col3, col4) VALUES (\'test\', 4, 34.1, \'hello world\')]]>
     </string>
 </resources>
