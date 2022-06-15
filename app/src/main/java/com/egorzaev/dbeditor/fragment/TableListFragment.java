@@ -53,7 +53,7 @@ public class TableListFragment extends MyFragment {
 
     @SuppressLint("Range")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { // Вывод списка таблиц в базе данных
         View view = inflater.inflate(R.layout.fragment_table_list, container, false);
 
         // assert getArguments() != null;
@@ -131,7 +131,7 @@ public class TableListFragment extends MyFragment {
 
             adapter.notifyDataSetChanged();
 
-            tables_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            tables_list.setOnItemClickListener(new AdapterView.OnItemClickListener() { // При нажатии на элемент списка переходим к просмотру таблицы
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     // Intent intent = new Intent(TableListActivity.this, TableViewActivity.class);
@@ -155,7 +155,7 @@ public class TableListFragment extends MyFragment {
                 }
             });
 
-            tables_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            tables_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {  // При долгом нажатии удаляем таблицу из БД
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Log.d("ezaev", "onItemLongClick: " + "DROP TABLE " + tableNames.get(i));
@@ -200,6 +200,8 @@ public class TableListFragment extends MyFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        // Так как этот фрагмент - базовый, ниже него ничего нет,
+        // то при нажатии кнопки "назад" завершаем активность.
         Toolbar myToolbar = view.findViewById(R.id.myToolbar);
 
         myToolbar.setTitle(R.string.app_name);
@@ -214,7 +216,7 @@ public class TableListFragment extends MyFragment {
     }
 
     @Override
-    public void onStop () {
+    public void onStop () { // При завершении закрываем БД
         super.onStop();
         if (database != null) {
             database.close();

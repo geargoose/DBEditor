@@ -59,7 +59,7 @@ public class TableViewFragment extends MyFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {  // Просмотр таблицы
         View view = inflater.inflate(R.layout.fragment_table_view, container, false);
 
         assert getArguments() != null;
@@ -83,28 +83,12 @@ public class TableViewFragment extends MyFragment {
         empty.setVisibility(View.GONE);
 
         if (query != null) {
-            runQuery(query);
+            runQuery(query);  // В начале отправляем запрос, путь и таблицу в DbWorker
         } else {
             runQuery("SELECT * FROM " + table);
         }
 
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.table_view_top_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_update: {
-                return true;
-            }
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -116,7 +100,7 @@ public class TableViewFragment extends MyFragment {
 
         mWorkManager.getWorkInfoByIdLiveData(queryRequest.getId()).observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
             @Override
-            public void onChanged(WorkInfo workInfo) {
+            public void onChanged(WorkInfo workInfo) { // Когда DbWorker завершил свою работу, получаем результат:
                 boolean finished = workInfo.getState().isFinished();
                 if (finished) {
                     Data output = workInfo.getOutputData();
@@ -130,7 +114,7 @@ public class TableViewFragment extends MyFragment {
 
     }
 
-    void fill_table(Data output) {
+    void fill_table(Data output) { // Ф-ция для упрощения заполнения таблицы данными
         int rows = output.getInt("qty", 0);
         String[] cols = output.getStringArray("cols");
 
@@ -180,91 +164,9 @@ public class TableViewFragment extends MyFragment {
 
     void clear_table() {
         table_view.removeAllViews();
-    }
+    }  // Очистка таблицы
 
-
-    //@Override
-    //public void onChanged(List<WorkInfo> workInfos) {
-    //    WorkInfo workInfo = workInfos.get(queryRequest.getId());
-    //    Log.d("ezaev", "onResume: " + workInfos.size());
-
-    // boolean finished = workInfo.getState().isFinished();
-    // if (finished) {
-    //
-    // }
-    //    }
-    //});
-
-        /*
-        listOfWorkInfos -> {
-
-            // If there are no matching work info, do nothing
-            if (listOfWorkInfos == null || listOfWorkInfos.isEmpty()) {
-                return;
-            }
-
-            // We only care about the first output status.
-            // Every continuation has only one worker tagged TAG_OUTPUT
-            listOfWorkInfos.size();
-            WorkInfo workInfo = listOfWorkInfos.get(0);
-            Log.d("ezaev", "onResume: " + listOfWorkInfos.size());
-
-            boolean finished = workInfo.getState().isFinished();
-            if (!finished) {
-                //showWorkInProgress();
-
-                Log.d("ezaev", "onResume: task in process");
-                spinner.setVisibility(View.VISIBLE);
-            } else {
-                //showWorkFinished();
-
-                Data output = workInfo.getOutputData();
-
-                // Generate table
-                /-*
-                if (c.getCount() > 0) {
-                        c.moveToFirst();
-                        do {
-                            TableRow row = new TableRow(getContext());
-                            String[] al = new String[c.getColumnCount()];
-                            for (int i = 0; i < c.getColumnCount(); i++) {
-                                al[i] = c.getString(i);
-                            }
-                            View.OnClickListener edit_action = new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Bundle b = new Bundle();
-                                    b.putString("name", name);
-                                    b.putString("path", path);
-                                    b.putString("type", type);
-                                    b.putString("table", table);
-                                    b.putStringArray("coords", al);
-                                    Navigation.findNavController(getView()).navigate(R.id.itemEditorFragment, b, new NavOptions.Builder()
-                                            .setEnterAnim(android.R.animator.fade_in)
-                                            .setExitAnim(android.R.animator.fade_out)
-                                            .build());
-                                }
-                            };
-                            for (int i = 0; i < c.getColumnCount(); i++) {
-                                Button button = new Button(getContext()); // c.getString(i)
-                                button.setText(c.getString(i));
-                                button.setOnClickListener(edit_action);
-                                row.addView(button);
-                            }
-                            table_view.addView(row);
-                        } while (c.moveToNext());
-                    }
-                *-/
-                Log.d("ezaev", "onResume: " + output.toString());
-
-                // empty.setVisibility(View.VISIBLE);
-                spinner.setVisibility(View.GONE);
-                mWorkManager.cancelAllWork();
-            }
-        }
-        */
-
-    void runQuery(String request) {
+    void runQuery(String request) { // Ф-ция, отправляющая запрос к DbWorker
         queryRequest =
                 new OneTimeWorkRequest.Builder(DbWorker.class)
                         .setInputData(
@@ -282,72 +184,4 @@ public class TableViewFragment extends MyFragment {
         mWorkManager.enqueue(queryRequest);
     }
 
-    /*
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Db db = new Db(getContext(), path, null, 1);
-        SQLiteDatabase database = db.getReadableDatabase();
-
-        Cursor c;
-
-        try {
-            if (query == null || query.equals("")) {
-                c = database.query(table, null, null, null, null, null, null);
-            } else {
-                c = database.rawQuery(query, null);
-            }
-
-            TableRow titles = new TableRow(getContext());
-            for (String name : c.getColumnNames()) {
-                TextView textView = new TextView(getContext());
-                textView.setText(name);
-                titles.addView(textView);
-            }
-            table_view.addView(titles);
-
-            if (c.getCount() > 0) {
-                c.moveToFirst();
-                do {
-                    TableRow row = new TableRow(getContext());
-                    String[] al = new String[c.getColumnCount()];
-                    for (int i = 0; i < c.getColumnCount(); i++) {
-                        al[i] = c.getString(i);
-                    }
-                    View.OnClickListener edit_action = new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Bundle b = new Bundle();
-                            b.putString("name", name);
-                            b.putString("path", path);
-                            b.putString("type", type);
-                            b.putString("table", table);
-                            b.putStringArray("coords", al);
-                            Navigation.findNavController(getView()).navigate(R.id.itemEditorFragment, b, new NavOptions.Builder()
-                                    .setEnterAnim(android.R.animator.fade_in)
-                                    .setExitAnim(android.R.animator.fade_out)
-                                    .build());
-                        }
-                    };
-                    for (int i = 0; i < c.getColumnCount(); i++) {
-                        Button button = new Button(getContext()); // c.getString(i)
-                        button.setText(c.getString(i));
-                        button.setOnClickListener(edit_action);
-                        row.addView(button);
-                    }
-                    table_view.addView(row);
-                } while (c.moveToNext());
-            }
-            c.close();
-        } catch (SQLiteException e) {
-            TextView tv = new TextView(getContext());
-            tv.setText("В запросе допущена ошибка!");
-            table_view.addView(tv);
-        }
-
-
-
-    }
-     */
 }

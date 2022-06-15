@@ -39,7 +39,7 @@ public class QueryFragment extends MyFragment {
     String type;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { // Выполнение запроса к БД
         View view = inflater.inflate(R.layout.fragment_query, container, false);
 
         assert getArguments() != null;
@@ -54,7 +54,7 @@ public class QueryFragment extends MyFragment {
         query_edit = view.findViewById(R.id.queryTextEdit);
         myToolbar = view.findViewById(R.id.myToolbar);
 
-        myToolbar.setOnMenuItemClickListener(item -> {
+        myToolbar.setOnMenuItemClickListener(item -> { // Подключаем кнопку "помощь" к ToolBar
             switch (item.getItemId()) {
                 case R.id.action_help:
                     Navigation.findNavController(requireView()).navigate(R.id.learningFragment, null, new NavOptions.Builder()

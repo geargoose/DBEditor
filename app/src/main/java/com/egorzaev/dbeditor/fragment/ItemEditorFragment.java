@@ -50,14 +50,14 @@ public class ItemEditorFragment extends MyFragment {
 
     @SuppressLint("Range")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { // Редактирование строки
         View view = inflater.inflate(R.layout.fragment_item_editor, container, false);
 
         ll = view.findViewById(R.id.items_container);
         save_fab = view.findViewById(R.id.save_fab);
 
         assert getArguments() != null;
-        name = getArguments().getString("name");
+        name = getArguments().getString("name"); // Помимо стандартных таблицы, имени и типа получаем названия заголовков и значения
         table = getArguments().getString("table");
         path = getArguments().getString("path");
         type = getArguments().getString("type");
@@ -77,7 +77,7 @@ public class ItemEditorFragment extends MyFragment {
 
         // c.close();
 
-        for (int i = 0; i < cols.size(); i++) {
+        for (int i = 0; i < cols.size(); i++) {  // Добавляем TextView, подсказка - название столбца, значение - значение ячейки в БД
             EditText e = new EditText(getContext());
             e.setHint(cols.get(i));
             e.setText(vals.get(i));
@@ -102,11 +102,12 @@ public class ItemEditorFragment extends MyFragment {
             }
         }
 
+        /*
         Toolbar myToolbar = view.findViewById(R.id.myToolbar);
-        myToolbar.setOnMenuItemClickListener(item -> {
+        myToolbar.setOnMenuItemClickListener(item -> { // Удаление элемента
             switch (item.getItemId()) {
                 case R.id.action_delete:
-                    // Navigate to settings screen
+                    // Выполняется запрос по удалению элемента
                     Cursor cursor = database.rawQuery("DELETE FROM " + table + " WHERE " + query_before + "", null);
                     Log.d(TAG, "onCreateView: " + "DELETE FROM " + table + " WHERE " + query_before + "");
                     Log.d(TAG, "onCreateView: " + cursor.getColumnCount());
@@ -117,8 +118,9 @@ public class ItemEditorFragment extends MyFragment {
                     return false;
             }
         });
+        */
 
-        save_fab.setOnClickListener(new View.OnClickListener() {
+        save_fab.setOnClickListener(new View.OnClickListener() { // Если нажата кнопка "сохранить", выполняем соответствующий запрос
             @Override
             public void onClick(View v) {
                 ContentValues cv = new ContentValues();

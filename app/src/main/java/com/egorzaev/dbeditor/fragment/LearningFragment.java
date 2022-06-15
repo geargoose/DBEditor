@@ -22,13 +22,15 @@ public class LearningFragment extends MyFragment {
 
     ImageButton btn_select_1;
     ImageButton btn_select_2;
+    ImageButton btn_insert_1;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { // Выполнение кода для каждого CardView с кодом:
         View view = inflater.inflate(R.layout.fragment_learning, container, false);
 
         btn_select_1 = view.findViewById(R.id.btn_select_1);
         btn_select_2 = view.findViewById(R.id.btn_select_2);
+        btn_insert_1 = view.findViewById(R.id.btn_insert_1);
 
         btn_select_1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,10 +46,17 @@ public class LearningFragment extends MyFragment {
             }
         });
 
+        btn_insert_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigate(getResources().getString(R.string.ref_insert_1_code), view);
+            }
+        });
+
         return view;
     }
 
-    void navigate(String query, View view) {
+    void navigate(String query, View view) {  // Ф-ция, упрощающая выполнение запроса к БД и перехода к фрагменту просмотра таблицы
         Bundle b = new Bundle();
         b.putString("name", "sandbox");
         b.putString("path", "sandbox");

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton menu_fab;
     ListView database_list;
 
-    ArrayList<String> names;
+    ArrayList<String> names;  // Списки с именами, типами и путями к базам данных
     ArrayList<String> paths;
     ArrayList<String> types;
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String request = "CREATE TABLE IF NOT EXISTS dbfiles (\n" +
+        String request = "CREATE TABLE IF NOT EXISTS dbfiles (\n" + // Эта таблица хранит ранее открытые базы данных
                 "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "    name text NOT NULL,\n" +
                 "    description text NOT NULL,\n" +
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 "    path text NOT NULL\n" +
                 ");\n";
 
-        String drop_sandbox_request = "DROP TABLE IF EXISTS table_1";
+        String drop_sandbox_request = "DROP TABLE IF EXISTS table_1"; // Создание "песочницы"
 
         String sandbox_request = "CREATE TABLE IF NOT EXISTS table_1 (\n" +
                 "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
@@ -107,13 +107,13 @@ public class MainActivity extends AppCompatActivity {
         update_table(dbfiles);
 
         database_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            // При клике на пункт списка переходим к EditorActivity, передаём путь, тип и имя
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class);
                 intent.putExtra("name", names.get(position));
                 intent.putExtra("path", paths.get(position));
                 intent.putExtra("type", types.get(position));
-                // intent.putExtra("db", db);
                 startActivity(intent);
             }
         });
@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         menu_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // При нажатии на анимированную кнопку показываем варианты
                 setAnimatedFabOpen(fab_anim);
                 fab_anim = !fab_anim;
             }
@@ -145,17 +146,17 @@ public class MainActivity extends AppCompatActivity {
         open_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Запускаем "выбор файла" при нажатии "добавить"
                 Intent picker = new Intent(Intent.ACTION_GET_CONTENT);
                 picker.setType("*/*");
                 startActivityForResult(picker, 1);
-
             }
         });
 
         add_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // Создаём новый файл при нажатии на "создать"
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Создать новый файл");
 
@@ -195,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    void setAnimatedFabOpen(boolean visibility) {
+    void setAnimatedFabOpen(boolean visibility) {  // Ф-ция для открытия/закрытия меню кнопки
         if (visibility) {
             add_fab.animate().translationY(0).alpha(1).setDuration(200).start();
             open_fab.animate().translationY(0).alpha(1).setDuration(200).start();
@@ -216,13 +217,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() {  // Прячем меню при нажатии "назад"
         super.onBackPressed();
         setAnimatedFabOpen(false);
         fab_anim = true;
     }
 
-    void update_table(SQLiteDatabase db) {
+    void update_table(SQLiteDatabase db) {  // Загрузка элементов из БД в список
         try {
             Cursor c = db.query("dbfiles", null, null, null, null, null, null);
             if (c.getCount() > 0) {
@@ -251,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) { // Получеие пути к файлу в кач-ве результата
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1) {
@@ -284,6 +285,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onStop() { // при завершении активности закрываем БД
+        super.onStop();
+        if (dbfiles != null) {
+            dbfiles.close();
+        }
+        db.close();
+    }
+
+    // Дальнейшие ф-ции отвечают за получение полного пути к файлу из результата
 
     public String getFilePath(Uri uri) {
         String selection = null;
@@ -339,15 +351,6 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (dbfiles != null) {
-            dbfiles.close();
-        }
-        db.close();
-    }
-
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
@@ -359,7 +362,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
-
+/*
     public String getFileExtension(String path) {
         int pos = path.lastIndexOf(".");
         if (pos != -1) return path.substring(pos + 1);
@@ -376,5 +379,5 @@ public class MainActivity extends AppCompatActivity {
         return Environment.MEDIA_MOUNTED.equals(state) ||
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
-
+*/
 }

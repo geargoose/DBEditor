@@ -171,6 +171,6 @@
         SELECT * FROM table_1 WHERE id &lt; 4
     </string>
     <string name="ref_insert_1_code" translatable="false">
-        <![CDATA[INSERT table_1(col1, col2, col3, col4) VALUES (\'test\', 4, 34.1, \'hello world\')]]>
+        <![CDATA[INSERT INTO table_1 (col1, col2, col3, col4) VALUES (\'test\', \'qwerty\', \'hello\', \'world\')]]>
     </string>
 </resources>

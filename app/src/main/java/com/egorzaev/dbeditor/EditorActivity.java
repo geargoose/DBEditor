@@ -8,50 +8,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class EditorActivity extends AppCompatActivity {
 
-    // Db db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().penaltyDialog().build();
-        //StrictMode.setThreadPolicy(policy);
-        //db = new Db(this, getIntent().getStringExtra("path"), null, 1);
-
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setHomeButtonEnabled(true);
         try {
-            getSupportActionBar().hide();
+            getSupportActionBar().hide(); // Т. к. фрагменты используют свой TollBar, то системный просто не нужен, прячем его.
         }
         catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
 
-    // @Override
-    // protected void onStop() {
-    //     super.onStop();
-    //     db.close();
-    // }
-
-    public Intent getParamsFromIntent() {
+    public Intent getParamsFromIntent() {  // Передача Intent фрагменту
         return getIntent();
-    }
-
-    // public Db getDb() {
-    //     return db;
-    // }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                //getSupportFragmentManager().popBackStack();
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }

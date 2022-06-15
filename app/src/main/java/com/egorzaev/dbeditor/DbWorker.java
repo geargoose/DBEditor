@@ -11,6 +11,8 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 public class DbWorker extends Worker {
+    // Worker получает запрос, таблицу и путь к БД. Если запрос пустой, то вываодятся все данные из таблицы.
+    // Результатом является последовательность String[], пронумерованных от 1 до кол-ва строк в таблице.
 
     public DbWorker(
             @NonNull Context appContext,
@@ -24,10 +26,10 @@ public class DbWorker extends Worker {
         Log.d("ezaev", "doWork: begin task");
 
         String query = getInputData().getString("query");
-        String name = getInputData().getString("name");
+        //String name = getInputData().getString("name");
         String table = getInputData().getString("table");
         String path = getInputData().getString("path");
-        String type = getInputData().getString("type");
+        //String type = getInputData().getString("type");
 
         try {
 

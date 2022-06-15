@@ -13,7 +13,7 @@ import com.egorzaev.dbeditor.R;
 public class MyFragment extends Fragment {
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {  // Основа, которую наследуют все фрагменты моего приложения
         Toolbar myToolbar = view.findViewById(R.id.myToolbar);
         myToolbar.setTitle(R.string.app_name);
         myToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
@@ -21,7 +21,7 @@ public class MyFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getParentFragmentManager().popBackStack();
-            }
+            } // При нажатии кнопки "назад" на ToolBar'е, возвращаемся к предыдущему фрагменту в BackStack
         });
     }
 }

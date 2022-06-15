@@ -23,7 +23,7 @@ public class ReferenceFragment extends MyFragment {
     TextView tv;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { // Вывод кратких справочных материалов по SQL
         View view = inflater.inflate(R.layout.fragment_reference, container, false);
         
         tv = view.findViewById(R.id.ref_tv);
