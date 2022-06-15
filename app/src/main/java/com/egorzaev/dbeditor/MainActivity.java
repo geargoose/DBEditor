@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayAdapter<String> adapter;
 
+    Db db;
+    SQLiteDatabase dbfiles;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,12 +81,9 @@ public class MainActivity extends AppCompatActivity {
         sandboxDb.close();
 
 
-        Db db = new Db(this, "dbfiles", null, 1);
-        SQLiteDatabase dbfiles = db.getReadableDatabase();
+        db = new Db(this, "dbfiles", null, 1);
+        dbfiles = db.getReadableDatabase();
         dbfiles.execSQL(request);
-
-
-
 
         names = new ArrayList<>();
         paths = new ArrayList<>();
@@ -115,14 +115,22 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("type", types.get(position));
                 // intent.putExtra("db", db);
                 startActivity(intent);
+            }
+        });
 
-                // Bundle b = new Bundle();
-                // b.putString("name", names.get(position));
-                // b.putString("path", paths.get(position));
-                // b.putString("type", types.get(position));
-
-                dbfiles.close();
-                db.close();
+        database_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Db dbi = new Db(MainActivity.this, "dbfiles", null, 1);
+                SQLiteDatabase dbfilesi = dbi.getReadableDatabase();
+                dbfilesi.rawQuery("DELETE FROM dbfiles WHERE name = '" + names.get(i) + "'", null).close();
+                dbfilesi.close();
+                dbi.close();
+                names.remove(i);
+                types.remove(i);
+                paths.remove(i);
+                adapter.notifyDataSetChanged();
+                return true;
             }
         });
 
@@ -147,11 +155,6 @@ public class MainActivity extends AppCompatActivity {
         add_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: file creation dialog
-                // Toast.makeText(MainActivity.this, "Если вы видите это сообщение,", Toast.LENGTH_LONG).show();
-                // Toast.makeText(MainActivity.this, "то создание файла пока не работает", Toast.LENGTH_LONG).show();
-                // Toast.makeText(MainActivity.this, "попробуйте создать файл через проводник", Toast.LENGTH_LONG).show();
-                // Toast.makeText(MainActivity.this, "или запросите обновление у разработчика", Toast.LENGTH_LONG).show();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Создать новый файл");
@@ -190,9 +193,6 @@ public class MainActivity extends AppCompatActivity {
 
         database_list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
-        dbfiles.close();
-        db.close();
     }
 
     void setAnimatedFabOpen(boolean visibility) {
@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
                 dbfiles.insert("dbfiles", null, cv);
 
                 update_table(dbfiles);
-                dbfiles.close();
+                // dbfiles.close();
             }
         }
     }
@@ -337,6 +337,15 @@ public class MainActivity extends AppCompatActivity {
             return uri.getPath();
         }
         return null;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (dbfiles != null) {
+            dbfiles.close();
+        }
+        db.close();
     }
 
     public static boolean isExternalStorageDocument(Uri uri) {
